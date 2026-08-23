@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculadora de Recursos Necessários — Main Hall</title>
+<title>Calculadora de Recursos AOZ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -62,7 +62,7 @@
 
   main{ padding: 32px clamp(16px, 5vw, 56px) 60px; max-width: 1180px; margin: 0 auto; }
 
-  /* ===== Form panel ===== */
+  /* ===== Panels ===== */
   .panel{
     background: var(--bg-panel);
     border: 1px solid var(--rule);
@@ -74,12 +74,17 @@
     border: 1px dashed rgba(233,228,212,0.08);
     pointer-events:none;
   }
-  .form-panel{ padding: 26px clamp(18px,4vw,34px); margin-bottom: 26px; }
+  .form-panel{ padding: 26px clamp(18px,4vw,34px); margin-bottom: 20px; }
   .form-grid{
     display:grid; grid-template-columns: 1fr 1fr auto; gap: 22px;
     align-items:end;
   }
   @media (max-width: 640px){ .form-grid{ grid-template-columns: 1fr; } }
+
+  .section-label{
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.2em;
+    text-transform:uppercase; color: var(--amber); margin: 0 0 16px; font-weight:700;
+  }
 
   .field label{
     display:block; font-family:'JetBrains Mono',monospace; font-size:11px;
@@ -99,6 +104,7 @@
     transition: border-color .15s ease;
   }
   select:focus{ outline: 2px solid var(--amber); outline-offset: 2px; border-color: var(--amber); }
+  select:disabled{ opacity:0.35; cursor:not-allowed; }
 
   .btn-calc{
     background: var(--rust);
@@ -120,6 +126,37 @@
     color: var(--danger); margin-top: 4px; display:none;
   }
   .form-error.show{ display:block; }
+
+  /* ===== Extra buildings panel ===== */
+  .extra-panel{ padding: 24px clamp(18px,4vw,34px); margin-bottom: 26px; }
+  .extra-grid{
+    display:grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+  }
+  @media (max-width: 820px){ .extra-grid{ grid-template-columns: 1fr; } }
+
+  .extra-card{
+    background: var(--bg-panel-2);
+    border: 1px solid var(--rule);
+    padding: 16px 18px;
+  }
+  .extra-check{
+    display:flex; align-items:center; gap:10px; cursor:pointer;
+    margin-bottom: 12px;
+  }
+  .extra-check input[type="checkbox"]{
+    width:18px; height:18px; accent-color: var(--rust); cursor:pointer;
+  }
+  .extra-check span{
+    font-family:'Oswald',sans-serif; font-weight:600; text-transform:uppercase;
+    letter-spacing:0.04em; font-size:15px;
+  }
+  .extra-card .field{ margin-top: 10px; }
+  .extra-card .hint{
+    font-family:'JetBrains Mono',monospace; font-size:11px; color: var(--paper-dim);
+    margin-top: 8px; line-height:1.5;
+  }
+  .extra-card[data-active="false"] select{ display:none; }
+  .extra-card[data-active="false"] .hint{ display:none; }
 
   /* ===== Result ===== */
   #result{ display:none; }
@@ -178,9 +215,35 @@
   .c-min   { --bar: #6e93a8; }
   .c-uran  { --bar: #8a9a5b; }
 
+  /* ===== breakdown table ===== */
+  .breakdown{
+    margin-top: 26px;
+    background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    padding: 20px clamp(16px,3vw,26px);
+  }
+  .breakdown h2{
+    margin:0 0 14px; font-size:14px; letter-spacing:0.12em; text-transform:uppercase;
+    font-family:'JetBrains Mono',monospace; color: var(--amber); font-weight:700;
+  }
+  .bd-row{
+    display:grid; grid-template-columns: 1fr repeat(5, 90px); gap: 10px;
+    padding: 9px 0; border-top: 1px dashed var(--rule);
+    font-family:'JetBrains Mono',monospace; font-size: 12.5px; align-items:center;
+  }
+  .bd-row:first-child{ border-top:none; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--paper-dim); }
+  .bd-row .bname{ color: var(--paper); font-weight:500; }
+  .bd-row:first-child .bname{ color: var(--paper-dim); font-weight:400; }
+  .bd-row span:not(.bname){ text-align:right; color: var(--paper-dim); }
+  .bd-row.total{ border-top: 1px solid var(--rule); margin-top:4px; padding-top:12px; }
+  .bd-row.total .bname, .bd-row.total span{ color: var(--paper); font-weight:700; }
+  @media (max-width: 700px){
+    .bd-row{ grid-template-columns: 1fr repeat(5, 1fr); font-size:11px; gap:6px; }
+  }
+
   /* ===== Notes / requirements per level ===== */
   .notes{
-    margin-top: 26px;
+    margin-top: 20px;
     background: var(--bg-panel);
     border: 1px solid var(--rule);
     border-left: 3px solid var(--amber);
@@ -209,6 +272,7 @@
     color: var(--paper-dim); border-top: 1px solid var(--rule); padding-top: 16px;
   }
   .warn b{ color: var(--olive); }
+  .warn.alert b{ color: var(--rust); }
 
   footer{
     padding: 26px clamp(16px,5vw,56px) 40px;
@@ -238,6 +302,7 @@
 <main>
 
   <section class="panel form-panel">
+    <p class="section-label">Main Hall</p>
     <div class="form-grid">
       <div class="field">
         <label for="lvFrom">Nível atual do Main Hall</label>
@@ -251,6 +316,49 @@
         <button class="btn-calc" id="calcBtn" type="button">Calcular requisição</button>
       </div>
       <p class="form-error" id="formError">O nível desejado precisa ser maior que o nível atual.</p>
+    </div>
+  </section>
+
+  <section class="panel extra-panel">
+    <p class="section-label">Construções adicionais (opcional)</p>
+    <div class="extra-grid">
+
+      <div class="extra-card" id="cardFactory" data-active="false">
+        <label class="extra-check">
+          <input type="checkbox" id="chkFactory">
+          <span>Fábrica</span>
+        </label>
+        <div class="field">
+          <label for="lvFactory">Nível atual da Fábrica</label>
+          <select id="lvFactory"></select>
+        </div>
+        <p class="hint">A Fábrica só sobe até o mesmo nível do Main Hall — se ela estiver atrasada, o simulador cobra desde o nível atual dela até o nível desejado do Main Hall.</p>
+      </div>
+
+      <div class="extra-card" id="cardCamp" data-active="false">
+        <label class="extra-check">
+          <input type="checkbox" id="chkCamp">
+          <span>Acampamento</span>
+        </label>
+        <div class="field">
+          <label for="lvCamp">Nível atual do Acampamento</label>
+          <select id="lvCamp"></select>
+        </div>
+        <p class="hint">Mesma lógica: o Acampamento é limitado ao nível do Main Hall, então pode estar atrasado em relação a ele.</p>
+      </div>
+
+      <div class="extra-card" id="cardWorkshop" data-active="false">
+        <label class="extra-check">
+          <input type="checkbox" id="chkWorkshop">
+          <span>Workshop</span>
+        </label>
+        <div class="field">
+          <label for="lvWorkshop">Nível atual do Workshop</label>
+          <select id="lvWorkshop"></select>
+        </div>
+        <p class="hint">A wiki só documenta o Workshop até o nível 38 — se o nível desejado passar disso, o excedente fica de fora do cálculo.</p>
+      </div>
+
     </div>
   </section>
 
@@ -288,14 +396,23 @@
       </div>
     </div>
 
+    <div class="breakdown" id="breakdownBox" style="display:none;">
+      <h2>Divisão por construção</h2>
+      <div id="breakdownRows"></div>
+    </div>
+
     <div class="notes">
-      <h2>Construções exigidas, nível a nível</h2>
+      <h2>Construções exigidas, nível a nível (Main Hall)</h2>
       <p class="sub">Cada linha soma o Main Hall + a Muralha + a construção secundária daquele nível, considerando o cenário pessimista (construção secundária o mais atrasada possível em relação ao Main Hall).</p>
       <div id="levelNotes"></div>
     </div>
 
+    <p class="warn" id="workshopWarn" style="display:none;">
+      <b>Atenção:</b> o Workshop só tem dados publicados até o nível 38. A parte do seu alvo acima disso não entrou no cálculo.
+    </p>
+
     <p class="warn">
-      <b>Nota:</b> os valores partem do pior caso relatado pela wiki (aozcodes.com) — ou seja, assumem que Muralha e a construção secundária de cada etapa não foram niveladas com antecedência. Se você já mantém essas construções em dia, o custo real de Óleo, Aço, Terra Rara e Urânio será menor que o exibido aqui. Comida vem só do Main Hall — Muralha e construções secundárias nunca cobram Comida.
+      <b>Nota:</b> os valores do Main Hall partem do pior caso relatado pela wiki (aozcodes.com) — ou seja, assumem que Muralha e a construção secundária de cada etapa não foram niveladas com antecedência. Fábrica, Acampamento e Workshop seguem regra diferente: elas não têm construção secundária própria, só exigem que o Main Hall já esteja naquele nível — por isso o cálculo delas depende do nível atual que você informou para cada uma, não de um "pior caso" automático.
     </p>
   </section>
 
@@ -319,7 +436,83 @@
     { level:41, food:353685560, oil:710552860, steel:170485030, minerals:104181580, uranium:1021900, req:"Muralha até Lv.40, Embaixada até Lv.40 (pior caso: partindo de Lv.37)" },
   ];
 
+  // Fábrica e Acampamento: mesmo custo, nível idêntico ao Main Hall exigido, até Lv.41.
+  const FACTORY_DATA = {
+    20:{food:2487940,oil:1554960,steel:435390,minerals:0,uranium:0},
+    21:{food:2587480,oil:1617170,steel:436630,minerals:169800,uranium:0},
+    22:{food:2869050,oil:1879720,steel:554020,minerals:237430,uranium:0},
+    23:{food:3443680,oil:2213790,steel:688730,minerals:319770,uranium:0},
+    24:{food:4401570,oil:2771360,steel:912910,minerals:456450,uranium:0},
+    25:{food:5832080,oil:3672050,steel:1209610,minerals:604800,uranium:0},
+    26:{food:7438620,oil:4577610,steel:1602160,minerals:858300,uranium:0},
+    27:{food:9849370,oil:6061150,steel:2121400,minerals:1134460,uranium:0},
+    28:{food:12311810,oil:7387080,steel:2757840,minerals:1575910,uranium:0},
+    29:{food:16005290,oil:9603170,steel:3585180,minerals:2048670,uranium:0},
+    30:{food:20806877,oil:12484121,steel:4660734,minerals:2663271,uranium:0},
+    31:{food:27049030,oil:16229410,steel:6058970,minerals:3462270,uranium:12980},
+    32:{food:34622730,oil:20773620,steel:7755470,minerals:4431700,uranium:21430},
+    33:{food:43624620,oil:26174750,steel:9771880,minerals:5583940,uranium:37270},
+    34:{food:54094460,oil:32456650,steel:12117110,minerals:6924070,uranium:63550},
+    35:{food:67077080,oil:40246210,steel:15025200,minerals:8585840,uranium:76610},
+    36:{food:73425960,oil:44055530,steel:16447340,minerals:9398490,uranium:99670},
+    37:{food:79228520,oil:47537060,steel:17747100,minerals:10141210,uranium:118050},
+    38:{food:85157890,oil:51094670,steel:19075270,minerals:10900160,uranium:139750},
+    39:{food:85166400,oil:51099770,steel:19005170,minerals:10901250,uranium:153730},
+    40:{food:85174910,oil:51104870,steel:19070070,minerals:10902340,uranium:169110},
+    41:{food:85183420,oil:51109980,steel:19080970,minerals:10903430,uranium:186050},
+  };
+
+  const CAMP_DATA = {
+    20:{food:2487940,oil:1554960,steel:435390,minerals:0,uranium:0},
+    21:{food:2587480,oil:1617170,steel:436630,minerals:169800,uranium:0},
+    22:{food:2869050,oil:1879720,steel:554020,minerals:237430,uranium:0},
+    23:{food:3443680,oil:2213790,steel:688730,minerals:319770,uranium:0},
+    24:{food:4401570,oil:2771360,steel:912910,minerals:456450,uranium:0},
+    25:{food:5832080,oil:3672050,steel:1209610,minerals:604800,uranium:0},
+    26:{food:7438620,oil:4577610,steel:1602160,minerals:858300,uranium:0},
+    27:{food:9849370,oil:6061150,steel:2121400,minerals:1134460,uranium:0},
+    28:{food:12311810,oil:7387080,steel:2757840,minerals:1575910,uranium:0},
+    29:{food:16005290,oil:9603170,steel:3585180,minerals:2048670,uranium:0},
+    30:{food:20806877,oil:12484121,steel:4660734,minerals:2663271,uranium:0},
+    31:{food:27049030,oil:16229410,steel:6058970,minerals:3462270,uranium:12980},
+    32:{food:34622730,oil:20773620,steel:7755470,minerals:4431700,uranium:21430},
+    33:{food:43624620,oil:26174750,steel:9771880,minerals:5583940,uranium:42360},
+    34:{food:54094460,oil:32456650,steel:12117110,minerals:6924070,uranium:59310},
+    35:{food:67077080,oil:40246210,steel:15025200,minerals:8585840,uranium:76610},
+    36:{food:73425960,oil:44055530,steel:16447340,minerals:9398490,uranium:99670},
+    37:{food:79228520,oil:47537060,steel:17747100,minerals:10141210,uranium:118050},
+    38:{food:85157890,oil:51094670,steel:19075270,minerals:10900160,uranium:139750},
+    39:{food:85166400,oil:51099770,steel:19076170,minerals:10901250,uranium:153730},
+    40:{food:85174910,oil:51104870,steel:19079070,minerals:10902340,uranium:169110},
+    41:{food:85183420,oil:51109980,steel:19080970,minerals:10903430,uranium:186050},
+  };
+
+  // Workshop: dados publicados só até Lv.38.
+  const WORKSHOP_DATA = {
+    20:{food:3731910,oil:2332440,steel:653080,minerals:0,uranium:0},
+    21:{food:3881220,oil:2425760,steel:754950,minerals:254700,uranium:0},
+    22:{food:4303580,oil:2819580,steel:831030,minerals:356150,uranium:0},
+    23:{food:5165520,oil:3320690,steel:1033100,minerals:479650,uranium:0},
+    24:{food:6602360,oil:4157040,steel:1369370,minerals:684680,uranium:0},
+    25:{food:8748120,oil:5508080,steel:1814420,minerals:907200,uranium:0},
+    26:{food:11157930,oil:6866420,steel:2403240,minerals:1287450,uranium:0},
+    27:{food:14774060,oil:9091730,steel:3182100,minerals:1704700,uranium:0},
+    28:{food:18467720,oil:11080630,steel:4136760,minerals:2363860,uranium:0},
+    29:{food:24007940,oil:14404760,steel:5377770,minerals:3073010,uranium:0},
+    30:{food:31210370,oil:18726220,steel:6991120,minerals:3994920,uranium:0},
+    31:{food:40573540,oil:24344110,steel:9088450,minerals:5193400,uranium:15570},
+    32:{food:51934090,oil:31160430,steel:11633200,minerals:6647550,uranium:25710},
+    33:{food:65326930,oil:39262120,steel:14657820,minerals:8375910,uranium:44720},
+    34:{food:81141690,oil:48684970,steel:18175660,minerals:10386100,uranium:67720},
+    35:{food:100615620,oil:60369310,steel:22537800,minerals:12878760,uranium:98220},
+    36:{food:110138940,oil:66083290,steel:24671010,minerals:14097730,uranium:119600},
+    37:{food:118842780,oil:71305590,steel:26620650,minerals:15211810,uranium:141660},
+    38:{food:127736830,oil:76642000,steel:28612900,minerals:16350240,uranium:176500},
+  };
+
   const MIN_LEVEL = 30, MAX_LEVEL = 41;
+  const EXTRA_MIN_LEVEL = 20;
+  const WORKSHOP_MAX = 38;
 
   const lvFromSel = document.getElementById('lvFrom');
   const lvToSel = document.getElementById('lvTo');
@@ -339,6 +532,35 @@
   lvFromSel.value = 30;
   lvToSel.value = 34;
 
+  // Popula selects das construções adicionais
+  function fillExtraSelect(sel, maxLevel){
+    sel.innerHTML = '';
+    for (let i = EXTRA_MIN_LEVEL; i <= maxLevel; i++){
+      const opt = document.createElement('option');
+      opt.value = i; opt.textContent = 'Lv. ' + i;
+      sel.appendChild(opt);
+    }
+    sel.value = EXTRA_MIN_LEVEL;
+  }
+  const lvFactorySel = document.getElementById('lvFactory');
+  const lvCampSel = document.getElementById('lvCamp');
+  const lvWorkshopSel = document.getElementById('lvWorkshop');
+  fillExtraSelect(lvFactorySel, MAX_LEVEL);
+  fillExtraSelect(lvCampSel, MAX_LEVEL);
+  fillExtraSelect(lvWorkshopSel, WORKSHOP_MAX);
+
+  // Liga checkbox -> ativa/desativa card
+  function wireCheckbox(chkId, cardId){
+    const chk = document.getElementById(chkId);
+    const card = document.getElementById(cardId);
+    chk.addEventListener('change', () => {
+      card.setAttribute('data-active', chk.checked ? 'true' : 'false');
+    });
+  }
+  wireCheckbox('chkFactory', 'cardFactory');
+  wireCheckbox('chkCamp', 'cardCamp');
+  wireCheckbox('chkWorkshop', 'cardWorkshop');
+
   function fmt(n){
     const abs = Math.abs(n);
     if (abs >= 1e9) return trim(n/1e9) + ' G';
@@ -351,7 +573,20 @@
     s = s.replace(/0+$/,'').replace(/\.$/,'');
     return s;
   }
-  function exact(n){ return n.toLocaleString('pt-BR'); }
+  function exact(n){ return Math.round(n).toLocaleString('pt-BR'); }
+
+  function sumExtraBuilding(dataTable, fromLevel, toLevel, hardCap){
+    const cappedTo = Math.min(toLevel, hardCap);
+    const acc = { food:0, oil:0, steel:0, minerals:0, uranium:0 };
+    if (cappedTo <= fromLevel) return acc;
+    for (let lv = fromLevel + 1; lv <= cappedTo; lv++){
+      const row = dataTable[lv];
+      if (!row) continue;
+      acc.food += row.food; acc.oil += row.oil; acc.steel += row.steel;
+      acc.minerals += row.minerals; acc.uranium += row.uranium;
+    }
+    return acc;
+  }
 
   document.getElementById('calcBtn').addEventListener('click', () => {
     const from = parseInt(lvFromSel.value, 10);
@@ -365,24 +600,77 @@
     formError.classList.remove('show');
 
     const rows = DATA.filter(d => d.level > from && d.level <= to);
-    const totals = rows.reduce((acc, r) => {
+    const mainHallTotals = rows.reduce((acc, r) => {
       acc.food += r.food; acc.oil += r.oil; acc.steel += r.steel;
       acc.minerals += r.minerals; acc.uranium += r.uranium;
       return acc;
     }, { food:0, oil:0, steel:0, minerals:0, uranium:0 });
 
+    const breakdown = [ { name:'Main Hall + Muralha + secundária', totals: mainHallTotals } ];
+
+    let workshopExceeded = false;
+
+    if (document.getElementById('chkFactory').checked){
+      const fLevel = parseInt(lvFactorySel.value, 10);
+      const t = sumExtraBuilding(FACTORY_DATA, fLevel, to, MAX_LEVEL);
+      breakdown.push({ name:'Fábrica', totals: t });
+    }
+    if (document.getElementById('chkCamp').checked){
+      const cLevel = parseInt(lvCampSel.value, 10);
+      const t = sumExtraBuilding(CAMP_DATA, cLevel, to, MAX_LEVEL);
+      breakdown.push({ name:'Acampamento', totals: t });
+    }
+    if (document.getElementById('chkWorkshop').checked){
+      const wLevel = parseInt(lvWorkshopSel.value, 10);
+      if (to > WORKSHOP_MAX) workshopExceeded = true;
+      const t = sumExtraBuilding(WORKSHOP_DATA, wLevel, to, WORKSHOP_MAX);
+      breakdown.push({ name:'Workshop', totals: t });
+    }
+
+    const grand = breakdown.reduce((acc, b) => {
+      acc.food += b.totals.food; acc.oil += b.totals.oil; acc.steel += b.totals.steel;
+      acc.minerals += b.totals.minerals; acc.uranium += b.totals.uranium;
+      return acc;
+    }, { food:0, oil:0, steel:0, minerals:0, uranium:0 });
+
     document.getElementById('resultRange').textContent = `Main Hall Lv.${from} → Lv.${to}`;
 
-    document.getElementById('valFood').textContent = fmt(totals.food);
-    document.getElementById('exactFood').textContent = exact(totals.food);
-    document.getElementById('valOil').textContent = fmt(totals.oil);
-    document.getElementById('exactOil').textContent = exact(totals.oil);
-    document.getElementById('valSteel').textContent = fmt(totals.steel);
-    document.getElementById('exactSteel').textContent = exact(totals.steel);
-    document.getElementById('valMin').textContent = fmt(totals.minerals);
-    document.getElementById('exactMin').textContent = exact(totals.minerals);
-    document.getElementById('valUran').textContent = fmt(totals.uranium);
-    document.getElementById('exactUran').textContent = exact(totals.uranium);
+    document.getElementById('valFood').textContent = fmt(grand.food);
+    document.getElementById('exactFood').textContent = exact(grand.food);
+    document.getElementById('valOil').textContent = fmt(grand.oil);
+    document.getElementById('exactOil').textContent = exact(grand.oil);
+    document.getElementById('valSteel').textContent = fmt(grand.steel);
+    document.getElementById('exactSteel').textContent = exact(grand.steel);
+    document.getElementById('valMin').textContent = fmt(grand.minerals);
+    document.getElementById('exactMin').textContent = exact(grand.minerals);
+    document.getElementById('valUran').textContent = fmt(grand.uranium);
+    document.getElementById('exactUran').textContent = exact(grand.uranium);
+
+    // Divisão por construção (só mostra se tiver mais de uma linha)
+    const bdBox = document.getElementById('breakdownBox');
+    const bdRows = document.getElementById('breakdownRows');
+    bdRows.innerHTML = '';
+    if (breakdown.length > 1){
+      bdBox.style.display = 'block';
+      const header = document.createElement('div');
+      header.className = 'bd-row';
+      header.innerHTML = `<span class="bname">Construção</span><span>Comida</span><span>Óleo</span><span>Aço</span><span>T.Rara</span><span>Urânio</span>`;
+      bdRows.appendChild(header);
+      breakdown.forEach(b => {
+        const row = document.createElement('div');
+        row.className = 'bd-row';
+        row.innerHTML = `<span class="bname">${b.name}</span><span>${fmt(b.totals.food)}</span><span>${fmt(b.totals.oil)}</span><span>${fmt(b.totals.steel)}</span><span>${fmt(b.totals.minerals)}</span><span>${fmt(b.totals.uranium)}</span>`;
+        bdRows.appendChild(row);
+      });
+      const totalRow = document.createElement('div');
+      totalRow.className = 'bd-row total';
+      totalRow.innerHTML = `<span class="bname">Total geral</span><span>${fmt(grand.food)}</span><span>${fmt(grand.oil)}</span><span>${fmt(grand.steel)}</span><span>${fmt(grand.minerals)}</span><span>${fmt(grand.uranium)}</span>`;
+      bdRows.appendChild(totalRow);
+    } else {
+      bdBox.style.display = 'none';
+    }
+
+    document.getElementById('workshopWarn').style.display = workshopExceeded ? 'block' : 'none';
 
     const notesHost = document.getElementById('levelNotes');
     notesHost.innerHTML = '';
