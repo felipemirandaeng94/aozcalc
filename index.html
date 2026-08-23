@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Requisição de Suprimentos — Main Hall</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0c0d09;
+    --bg-panel: #14150f;
+    --bg-panel-2: #1b1c14;
+    --rule: #34362a;
+    --rust: #b3432f;
+    --rust-dim: #7a2f22;
+    --olive: #8a9a5b;
+    --amber: #d9a441;
+    --paper: #e9e4d4;
+    --paper-dim: #9c9885;
+    --danger: #c94b3a;
+  }
+  *{ box-sizing: border-box; }
+  html,body{
+    margin:0; padding:0;
+    background: var(--bg);
+    color: var(--paper);
+    font-family: 'Oswald', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  body{
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(138,154,91,0.06), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(179,67,47,0.07), transparent 45%);
+    min-height: 100vh;
+  }
+  .mono{ font-family: 'JetBrains Mono', monospace; }
+
+  /* ===== Header ===== */
+  header{
+    border-bottom: 1px solid var(--rule);
+    padding: 28px clamp(16px, 5vw, 56px) 22px;
+    display:flex; align-items:flex-end; justify-content:space-between; gap:16px;
+    flex-wrap: wrap;
+  }
+  .brand-eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size: 11px; letter-spacing: 0.28em; text-transform:uppercase;
+    color: var(--olive); margin: 0 0 6px;
+  }
+  h1{
+    margin:0; font-weight:700; text-transform:uppercase;
+    font-size: clamp(24px, 4vw, 38px); letter-spacing: 0.02em;
+    color: var(--paper);
+  }
+  h1 span{ color: var(--rust); }
+  .doc-id{
+    font-family:'JetBrains Mono',monospace; font-size:12px; color: var(--paper-dim);
+    text-align:right; line-height:1.6; border-left:1px solid var(--rule); padding-left:16px;
+  }
+  .doc-id b{ color: var(--amber); font-weight:500; }
+
+  main{ padding: 32px clamp(16px, 5vw, 56px) 60px; max-width: 1180px; margin: 0 auto; }
+
+  /* ===== Form panel ===== */
+  .panel{
+    background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    position: relative;
+  }
+  .panel::before{
+    content:"";
+    position:absolute; inset:6px;
+    border: 1px dashed rgba(233,228,212,0.08);
+    pointer-events:none;
+  }
+  .form-panel{ padding: 26px clamp(18px,4vw,34px); margin-bottom: 26px; }
+  .form-grid{
+    display:grid; grid-template-columns: 1fr 1fr auto; gap: 22px;
+    align-items:end;
+  }
+  @media (max-width: 640px){ .form-grid{ grid-template-columns: 1fr; } }
+
+  .field label{
+    display:block; font-family:'JetBrains Mono',monospace; font-size:11px;
+    letter-spacing:0.18em; text-transform:uppercase; color: var(--paper-dim); margin-bottom:8px;
+  }
+  select{
+    width:100%; appearance:none; -webkit-appearance:none;
+    background: var(--bg-panel-2);
+    border: 1px solid var(--rule);
+    color: var(--paper);
+    font-family:'JetBrains Mono',monospace; font-size:16px; font-weight:500;
+    padding: 12px 14px;
+    background-image: linear-gradient(45deg, transparent 50%, var(--olive) 50%), linear-gradient(135deg, var(--olive) 50%, transparent 50%);
+    background-position: calc(100% - 20px) calc(1.1em), calc(100% - 14px) calc(1.1em);
+    background-size: 6px 6px, 6px 6px;
+    background-repeat:no-repeat;
+    transition: border-color .15s ease;
+  }
+  select:focus{ outline: 2px solid var(--amber); outline-offset: 2px; border-color: var(--amber); }
+
+  .btn-calc{
+    background: var(--rust);
+    color: var(--paper);
+    border: 1px solid var(--rust);
+    font-family:'Oswald',sans-serif; font-weight:600; letter-spacing:0.08em; text-transform:uppercase;
+    font-size: 15px;
+    padding: 13px 26px;
+    cursor: pointer;
+    transition: background .15s ease, transform .1s ease;
+  }
+  .btn-calc:hover{ background: #c9503a; }
+  .btn-calc:active{ transform: translateY(1px); }
+  .btn-calc:focus-visible{ outline: 2px solid var(--amber); outline-offset:2px; }
+
+  .form-error{
+    grid-column: 1/-1;
+    font-family:'JetBrains Mono',monospace; font-size: 13px;
+    color: var(--danger); margin-top: 4px; display:none;
+  }
+  .form-error.show{ display:block; }
+
+  /* ===== Result ===== */
+  #result{ display:none; }
+  #result.show{ display:block; animation: rise .35s ease; }
+  @keyframes rise{ from{ opacity:0; transform: translateY(8px);} to{opacity:1; transform:none;} }
+
+  .result-head{
+    display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:14px; margin-bottom: 18px;
+  }
+  .result-title{ font-size: 13px; letter-spacing:0.2em; text-transform:uppercase; color:var(--paper-dim); font-family:'JetBrains Mono',monospace; }
+  .result-title b{ color:var(--paper); font-family:'Oswald',sans-serif; font-size:18px; letter-spacing:0.02em; text-transform:none; display:block; margin-top:4px; }
+
+  .stamp{
+    font-family:'JetBrains Mono',monospace; font-weight:700; font-size: 12px;
+    letter-spacing: 0.14em; color: var(--olive);
+    border: 2px solid var(--olive);
+    padding: 6px 12px;
+    transform: rotate(-3deg);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .cost-grid{
+    display:grid; grid-template-columns: repeat(5, 1fr); gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  @media (max-width: 900px){ .cost-grid{ grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 460px){ .cost-grid{ grid-template-columns: 1fr; } }
+
+  .cost-cell{
+    background: var(--bg-panel);
+    padding: 22px 18px;
+    position: relative;
+    overflow:hidden;
+  }
+  .cost-cell::after{
+    content:"";
+    position:absolute; left:0; right:0; bottom:0; height:3px;
+    background: var(--bar);
+  }
+  .cost-cell .label{
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.16em;
+    text-transform:uppercase; color: var(--paper-dim); margin-bottom:10px;
+  }
+  .cost-cell .value{
+    font-family:'JetBrains Mono',monospace; font-weight:700; font-size: clamp(20px,2.6vw,26px);
+    color: var(--paper);
+  }
+  .cost-cell .exact{ font-family:'JetBrains Mono',monospace; font-size:11px; color: var(--paper-dim); margin-top:6px; }
+
+  .c-food  { --bar: #c9a24a; }
+  .c-oil   { --bar: #b3432f; }
+  .c-steel { --bar: #8b8f86; }
+  .c-min   { --bar: #6e93a8; }
+  .c-uran  { --bar: #8a9a5b; }
+
+  /* ===== Notes / requirements per level ===== */
+  .notes{
+    margin-top: 26px;
+    background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--amber);
+    padding: 20px clamp(16px,3vw,26px);
+  }
+  .notes h2{
+    margin:0 0 6px; font-size:14px; letter-spacing:0.12em; text-transform:uppercase;
+    font-family:'JetBrains Mono',monospace; color: var(--amber); font-weight:700;
+  }
+  .notes p.sub{ margin:0 0 16px; font-size:13px; color: var(--paper-dim); font-family:'JetBrains Mono',monospace; line-height:1.6;}
+  .level-row{
+    display:grid; grid-template-columns: 64px 1fr; gap: 14px;
+    padding: 10px 0; border-top: 1px dashed var(--rule);
+    font-size: 14px;
+  }
+  .level-row:first-of-type{ border-top:none; }
+  .level-row .lv{
+    font-family:'JetBrains Mono',monospace; color: var(--rust); font-weight:700;
+  }
+  .level-row .req{ color: var(--paper-dim); line-height:1.5; }
+  .level-row .req b{ color: var(--paper); font-weight:500; }
+
+  .warn{
+    margin-top: 22px;
+    font-family:'JetBrains Mono',monospace; font-size: 12.5px; line-height:1.7;
+    color: var(--paper-dim); border-top: 1px solid var(--rule); padding-top: 16px;
+  }
+  .warn b{ color: var(--olive); }
+
+  footer{
+    padding: 26px clamp(16px,5vw,56px) 40px;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+    font-family:'JetBrains Mono',monospace;
+    font-size: 12px; letter-spacing: 0.08em;
+    color: var(--paper-dim);
+  }
+  footer b{ color: var(--paper); font-weight:500; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <p class="brand-eyebrow">Age of Origins — Central de Construção</p>
+    <h1>Registro de <span>Suprimentos</span></h1>
+  </div>
+  <div class="doc-id">
+    FORMULÁRIO <b>MH-3041</b><br>
+    ALVO: Main Hall Lv.30 – 41<br>
+    CENÁRIO: <b>pior caso</b>
+  </div>
+</header>
+
+<main>
+
+  <section class="panel form-panel">
+    <div class="form-grid">
+      <div class="field">
+        <label for="lvFrom">Nível atual do Main Hall</label>
+        <select id="lvFrom"></select>
+      </div>
+      <div class="field">
+        <label for="lvTo">Nível desejado</label>
+        <select id="lvTo"></select>
+      </div>
+      <div class="field">
+        <button class="btn-calc" id="calcBtn" type="button">Calcular requisição</button>
+      </div>
+      <p class="form-error" id="formError">O nível desejado precisa ser maior que o nível atual.</p>
+    </div>
+  </section>
+
+  <section id="result">
+    <div class="result-head">
+      <div class="result-title">Total de recursos exigido<b id="resultRange">—</b></div>
+      <span class="stamp">Requisição calculada</span>
+    </div>
+
+    <div class="cost-grid">
+      <div class="cost-cell c-food">
+        <div class="label">Comida</div>
+        <div class="value" id="valFood">—</div>
+        <div class="exact mono" id="exactFood"></div>
+      </div>
+      <div class="cost-cell c-oil">
+        <div class="label">Óleo</div>
+        <div class="value" id="valOil">—</div>
+        <div class="exact mono" id="exactOil"></div>
+      </div>
+      <div class="cost-cell c-steel">
+        <div class="label">Aço</div>
+        <div class="value" id="valSteel">—</div>
+        <div class="exact mono" id="exactSteel"></div>
+      </div>
+      <div class="cost-cell c-min">
+        <div class="label">Terra Rara</div>
+        <div class="value" id="valMin">—</div>
+        <div class="exact mono" id="exactMin"></div>
+      </div>
+      <div class="cost-cell c-uran">
+        <div class="label">Urânio</div>
+        <div class="value" id="valUran">—</div>
+        <div class="exact mono" id="exactUran"></div>
+      </div>
+    </div>
+
+    <div class="notes">
+      <h2>Construções exigidas, nível a nível</h2>
+      <p class="sub">Cada linha soma o Main Hall + a Muralha + a construção secundária daquele nível, considerando o cenário pessimista (construção secundária o mais atrasada possível em relação ao Main Hall).</p>
+      <div id="levelNotes"></div>
+    </div>
+
+    <p class="warn">
+      <b>Nota:</b> os valores partem do pior caso relatado pela wiki (aozcodes.com) — ou seja, assumem que Muralha e a construção secundária de cada etapa não foram niveladas com antecedência. Se você já mantém essas construções em dia, o custo real de Óleo, Aço, Terra Rara e Urânio será menor que o exibido aqui. Comida vem só do Main Hall — Muralha e construções secundárias nunca cobram Comida.
+    </p>
+  </section>
+
+</main>
+
+<footer>Desenvolvido por <b>Felipe Miranda</b></footer>
+
+<script>
+  // Custo por nível (pior caso), do 31 ao 41 — cada linha representa o upgrade DE (nível-1) PARA nível.
+  const DATA = [
+    { level:31, food:136690750, oil:201343320, steel:51203920,  minerals:30490860,  uranium:49270,   req:"Muralha até Lv.30, Recon Center já em Lv.30 (não precisa subir)" },
+    { level:32, food:169496550, oil:273459060, steel:68251530,  minerals:40981110,  uranium:119810,  req:"Muralha até Lv.31, Garagem até Lv.31 (recém desbloqueada)" },
+    { level:33, food:224193280, oil:331775020, steel:84290430,  minerals:50215100,  uranium:193380,  req:"Muralha até Lv.32, Depósito até Lv.32 (pior caso: partindo de Lv.30)" },
+    { level:34, food:248142840, oil:427442740, steel:105339900, minerals:63609420,  uranium:311210,  req:"Muralha até Lv.33, Embaixada até Lv.33 (pior caso: partindo de Lv.30)" },
+    { level:35, food:402720880, oil:526841609, steel:140223749, minerals:83329430,  uranium:525940,  req:"Muralha até Lv.34, Hospital até Lv.34 (pior caso: partindo de Lv.30)" },
+    { level:36, food:314374510, oil:669621750, steel:159072600, minerals:97665060,  uranium:767360,  req:"Muralha até Lv.35, Garagem até Lv.35 (pior caso: partindo de Lv.31)" },
+    { level:37, food:410135980, oil:632839570, steel:159378570, minerals:95315270,  uranium:686370,  req:"Muralha até Lv.36, Depósito até Lv.36 (pior caso: partindo de Lv.32)" },
+    { level:38, food:353579490, oil:703538270, steel:168993680, minerals:103233530, uranium:777100,  req:"Muralha até Lv.37, Embaixada até Lv.37 (pior caso: partindo de Lv.33)" },
+    { level:39, food:576806060, oil:735463190, steel:198513340, minerals:118204300, uranium:1070780, req:"Muralha até Lv.38, Hospital até Lv.38 (pior caso: partindo de Lv.34)" },
+    { level:40, food:353650200, oil:850141460, steel:198319990, minerals:122782570, uranium:1524070, req:"Muralha até Lv.39, Garagem até Lv.39 (pior caso: partindo de Lv.35)" },
+    { level:41, food:353685560, oil:710552860, steel:170485030, minerals:104181580, uranium:1021900, req:"Muralha até Lv.40, Embaixada até Lv.40 (pior caso: partindo de Lv.37)" },
+  ];
+
+  const MIN_LEVEL = 30, MAX_LEVEL = 41;
+
+  const lvFromSel = document.getElementById('lvFrom');
+  const lvToSel = document.getElementById('lvTo');
+  const formError = document.getElementById('formError');
+  const result = document.getElementById('result');
+
+  for (let i = MIN_LEVEL; i <= MAX_LEVEL - 1; i++){
+    const opt = document.createElement('option');
+    opt.value = i; opt.textContent = 'Lv. ' + i;
+    lvFromSel.appendChild(opt);
+  }
+  for (let i = MIN_LEVEL + 1; i <= MAX_LEVEL; i++){
+    const opt = document.createElement('option');
+    opt.value = i; opt.textContent = 'Lv. ' + i;
+    lvToSel.appendChild(opt);
+  }
+  lvFromSel.value = 30;
+  lvToSel.value = 34;
+
+  function fmt(n){
+    const abs = Math.abs(n);
+    if (abs >= 1e9) return trim(n/1e9) + ' G';
+    if (abs >= 1e6) return trim(n/1e6) + ' M';
+    if (abs >= 1e3) return trim(n/1e3) + ' K';
+    return String(n);
+  }
+  function trim(n){
+    let s = n.toFixed(2);
+    s = s.replace(/0+$/,'').replace(/\.$/,'');
+    return s;
+  }
+  function exact(n){ return n.toLocaleString('pt-BR'); }
+
+  document.getElementById('calcBtn').addEventListener('click', () => {
+    const from = parseInt(lvFromSel.value, 10);
+    const to = parseInt(lvToSel.value, 10);
+
+    if (to <= from){
+      formError.classList.add('show');
+      result.classList.remove('show');
+      return;
+    }
+    formError.classList.remove('show');
+
+    const rows = DATA.filter(d => d.level > from && d.level <= to);
+    const totals = rows.reduce((acc, r) => {
+      acc.food += r.food; acc.oil += r.oil; acc.steel += r.steel;
+      acc.minerals += r.minerals; acc.uranium += r.uranium;
+      return acc;
+    }, { food:0, oil:0, steel:0, minerals:0, uranium:0 });
+
+    document.getElementById('resultRange').textContent = `Main Hall Lv.${from} → Lv.${to}`;
+
+    document.getElementById('valFood').textContent = fmt(totals.food);
+    document.getElementById('exactFood').textContent = exact(totals.food);
+    document.getElementById('valOil').textContent = fmt(totals.oil);
+    document.getElementById('exactOil').textContent = exact(totals.oil);
+    document.getElementById('valSteel').textContent = fmt(totals.steel);
+    document.getElementById('exactSteel').textContent = exact(totals.steel);
+    document.getElementById('valMin').textContent = fmt(totals.minerals);
+    document.getElementById('exactMin').textContent = exact(totals.minerals);
+    document.getElementById('valUran').textContent = fmt(totals.uranium);
+    document.getElementById('exactUran').textContent = exact(totals.uranium);
+
+    const notesHost = document.getElementById('levelNotes');
+    notesHost.innerHTML = '';
+    rows.forEach(r => {
+      const row = document.createElement('div');
+      row.className = 'level-row';
+      row.innerHTML = `<div class="lv">Lv.${r.level}</div><div class="req">${r.req}</div>`;
+      notesHost.appendChild(row);
+    });
+
+    result.classList.add('show');
+    result.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  });
+</script>
+
+</body>
+</html>
