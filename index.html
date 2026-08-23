@@ -290,7 +290,7 @@
 <header>
   <div>
     <p class="brand-eyebrow">Age of Origins — Central de Construção</p>
-    <h1>Registro de <span>Suprimentos</span></h1>
+    <h1>Calculadora de <span>Recursos</span></h1>
   </div>
   <div class="doc-id">
     FORMULÁRIO <b>MH-3041</b><br>
@@ -332,7 +332,11 @@
           <label for="lvFactory">Nível atual da Fábrica</label>
           <select id="lvFactory"></select>
         </div>
-        <p class="hint">A Fábrica só sobe até o mesmo nível do Main Hall — se ela estiver atrasada, o simulador cobra desde o nível atual dela até o nível desejado do Main Hall.</p>
+        <div class="field">
+          <label for="lvFactoryTarget">Nível desejado da Fábrica</label>
+          <select id="lvFactoryTarget"></select>
+        </div>
+        <p class="hint">A Fábrica só sobe até o mesmo nível do Main Hall — mas você escolhe até onde quer levá-la, independente do alvo do Main Hall.</p>
       </div>
 
       <div class="extra-card" id="cardCamp" data-active="false">
@@ -344,7 +348,11 @@
           <label for="lvCamp">Nível atual do Acampamento</label>
           <select id="lvCamp"></select>
         </div>
-        <p class="hint">Mesma lógica: o Acampamento é limitado ao nível do Main Hall, então pode estar atrasado em relação a ele.</p>
+        <div class="field">
+          <label for="lvCampTarget">Nível desejado do Acampamento</label>
+          <select id="lvCampTarget"></select>
+        </div>
+        <p class="hint">Mesma lógica: o Acampamento é limitado ao nível do Main Hall, mas pode ficar em um alvo próprio, diferente do Main Hall.</p>
       </div>
 
       <div class="extra-card" id="cardWorkshop" data-active="false">
@@ -356,7 +364,11 @@
           <label for="lvWorkshop">Nível atual do Workshop</label>
           <select id="lvWorkshop"></select>
         </div>
-        <p class="hint">A wiki só documenta o Workshop até o nível 38 — se o nível desejado passar disso, o excedente fica de fora do cálculo.</p>
+        <div class="field">
+          <label for="lvWorkshopTarget">Nível desejado do Workshop</label>
+          <select id="lvWorkshopTarget"></select>
+        </div>
+        <p class="hint">A wiki só documenta o Workshop até o nível 38 — o seletor de alvo não passa disso.</p>
       </div>
 
     </div>
@@ -406,10 +418,6 @@
       <p class="sub">Cada linha soma o Main Hall + a Muralha + a construção secundária daquele nível, considerando o cenário pessimista (construção secundária o mais atrasada possível em relação ao Main Hall).</p>
       <div id="levelNotes"></div>
     </div>
-
-    <p class="warn" id="workshopWarn" style="display:none;">
-      <b>Atenção:</b> o Workshop só tem dados publicados até o nível 38. A parte do seu alvo acima disso não entrou no cálculo.
-    </p>
 
     <p class="warn">
       <b>Nota:</b> os valores do Main Hall partem do pior caso relatado pela wiki (aozcodes.com) — ou seja, assumem que Muralha e a construção secundária de cada etapa não foram niveladas com antecedência. Fábrica, Acampamento e Workshop seguem regra diferente: elas não têm construção secundária própria, só exigem que o Main Hall já esteja naquele nível — por isso o cálculo delas depende do nível atual que você informou para cada uma, não de um "pior caso" automático.
@@ -549,6 +557,16 @@
   fillExtraSelect(lvCampSel, MAX_LEVEL);
   fillExtraSelect(lvWorkshopSel, WORKSHOP_MAX);
 
+  const lvFactoryTargetSel = document.getElementById('lvFactoryTarget');
+  const lvCampTargetSel = document.getElementById('lvCampTarget');
+  const lvWorkshopTargetSel = document.getElementById('lvWorkshopTarget');
+  fillExtraSelect(lvFactoryTargetSel, MAX_LEVEL);
+  fillExtraSelect(lvCampTargetSel, MAX_LEVEL);
+  fillExtraSelect(lvWorkshopTargetSel, WORKSHOP_MAX);
+  lvFactoryTargetSel.value = MAX_LEVEL;
+  lvCampTargetSel.value = MAX_LEVEL;
+  lvWorkshopTargetSel.value = WORKSHOP_MAX;
+
   // Liga checkbox -> ativa/desativa card
   function wireCheckbox(chkId, cardId){
     const chk = document.getElementById(chkId);
@@ -608,23 +626,23 @@
 
     const breakdown = [ { name:'Main Hall + Muralha + secundária', totals: mainHallTotals } ];
 
-    let workshopExceeded = false;
-
     if (document.getElementById('chkFactory').checked){
       const fLevel = parseInt(lvFactorySel.value, 10);
-      const t = sumExtraBuilding(FACTORY_DATA, fLevel, to, MAX_LEVEL);
-      breakdown.push({ name:'Fábrica', totals: t });
+      const fTarget = parseInt(lvFactoryTargetSel.value, 10);
+      const t = sumExtraBuilding(FACTORY_DATA, fLevel, fTarget, MAX_LEVEL);
+      breakdown.push({ name:`Fábrica (→ Lv.${fTarget})`, totals: t });
     }
     if (document.getElementById('chkCamp').checked){
       const cLevel = parseInt(lvCampSel.value, 10);
-      const t = sumExtraBuilding(CAMP_DATA, cLevel, to, MAX_LEVEL);
-      breakdown.push({ name:'Acampamento', totals: t });
+      const cTarget = parseInt(lvCampTargetSel.value, 10);
+      const t = sumExtraBuilding(CAMP_DATA, cLevel, cTarget, MAX_LEVEL);
+      breakdown.push({ name:`Acampamento (→ Lv.${cTarget})`, totals: t });
     }
     if (document.getElementById('chkWorkshop').checked){
       const wLevel = parseInt(lvWorkshopSel.value, 10);
-      if (to > WORKSHOP_MAX) workshopExceeded = true;
-      const t = sumExtraBuilding(WORKSHOP_DATA, wLevel, to, WORKSHOP_MAX);
-      breakdown.push({ name:'Workshop', totals: t });
+      const wTarget = parseInt(lvWorkshopTargetSel.value, 10);
+      const t = sumExtraBuilding(WORKSHOP_DATA, wLevel, wTarget, WORKSHOP_MAX);
+      breakdown.push({ name:`Workshop (→ Lv.${wTarget})`, totals: t });
     }
 
     const grand = breakdown.reduce((acc, b) => {
@@ -669,8 +687,6 @@
     } else {
       bdBox.style.display = 'none';
     }
-
-    document.getElementById('workshopWarn').style.display = workshopExceeded ? 'block' : 'none';
 
     const notesHost = document.getElementById('levelNotes');
     notesHost.innerHTML = '';
