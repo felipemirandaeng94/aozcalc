@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Requisição de Suprimentos — Main Hall</title>
+<title>Requisição de Recursos — Main Hall</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -180,31 +180,6 @@
   .extra-card[data-active="false"] .hint{ display:none; }
   .extra-card[data-active="false"] .field label{ display:none; }
 
-  /* ===== Cenário real ===== */
-  .scenario-panel{padding:24px clamp(18px,4vw,34px);margin-bottom:26px;box-shadow:0 10px 35px rgba(0,0,0,.12);border-radius:4px;overflow:hidden}
-  .scenario-head{display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap;position:relative;z-index:1}
-  .scenario-sub{margin:-8px 0 0;max-width:760px;color:var(--paper-dim);font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.6}
-  .scenario-toggle{display:flex;align-items:center;gap:10px;cursor:pointer;border:1px solid var(--rule);background:var(--bg-panel-2);padding:10px 14px;white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em}
-  .scenario-toggle input{position:absolute;opacity:0;pointer-events:none}
-  .toggle-track{width:38px;height:20px;border:1px solid #555744;background:#25271d;border-radius:20px;position:relative;transition:.2s}
-  .toggle-track:after{content:"";position:absolute;width:14px;height:14px;top:2px;left:2px;border-radius:50%;background:var(--paper-dim);transition:.2s}
-  .scenario-toggle input:checked + .toggle-track{border-color:var(--olive);background:rgba(138,154,91,.18)}
-  .scenario-toggle input:checked + .toggle-track:after{transform:translateX(18px);background:var(--olive)}
-  .scenario-toggle:focus-within{outline:2px solid var(--amber);outline-offset:2px}
-  .scenario-status{margin-top:16px;padding:11px 13px;border-left:3px solid var(--amber);background:rgba(217,164,65,.06);color:var(--paper-dim);font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.5;position:relative;z-index:1}
-  .scenario-status.real{border-left-color:var(--olive);background:rgba(138,154,91,.07);color:var(--paper)}
-  .secondary-config{display:none;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px;position:relative;z-index:1}
-  .secondary-config.show{display:grid}
-  .secondary-card{background:var(--bg-panel-2);border:1px solid var(--rule);padding:14px 15px;display:grid;grid-template-columns:1fr 140px;gap:14px;align-items:center}
-  .secondary-name{font-family:'Oswald',sans-serif;font-size:16px;font-weight:600}
-  .secondary-target{margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--paper-dim);text-transform:uppercase;letter-spacing:.06em}
-  .secondary-card select{font-size:14px;padding:9px 12px}
-  .secondary-note{grid-column:1/-1;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--olive);line-height:1.45;border-top:1px dashed var(--rule);padding-top:8px}
-  .panel{box-shadow:0 10px 35px rgba(0,0,0,.10)}
-  .cost-cell{transition:transform .18s,background .18s}
-  .cost-cell:hover{transform:translateY(-2px);background:var(--bg-panel-2)}
-  @media(max-width:720px){.secondary-config{grid-template-columns:1fr}.secondary-card{grid-template-columns:1fr;gap:10px}.scenario-toggle{width:100%;justify-content:center}}
-
   /* ===== Result ===== */
   #result{ display:none; }
   #result.show{ display:block; animation: rise .35s ease; }
@@ -363,6 +338,25 @@
     .memory-row{ grid-template-columns: 80px repeat(5, 1fr); font-size:10px; gap:5px; }
   }
 
+
+  .scenario-panel{margin-top:18px}
+  .scenario-head{display:flex;justify-content:space-between;gap:24px;align-items:flex-start}
+  .scenario-sub{margin:6px 0 0;color:var(--paper-dim);font-size:13px;line-height:1.55;max-width:760px}
+  .scenario-toggle{display:flex;align-items:center;gap:10px;cursor:pointer;white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:12px}
+  .scenario-toggle input{position:absolute;opacity:0;pointer-events:none}
+  .toggle-track{width:46px;height:24px;border:1px solid var(--rule);border-radius:20px;position:relative;transition:.2s;background:#161a14}
+  .toggle-track:after{content:'';position:absolute;width:18px;height:18px;left:2px;top:2px;border-radius:50%;background:var(--paper-dim);transition:.2s}
+  .scenario-toggle input:checked + .toggle-track{background:var(--amber);border-color:var(--amber)}
+  .scenario-toggle input:checked + .toggle-track:after{transform:translateX(22px);background:#111}
+  .scenario-status{margin-top:16px;padding:11px 13px;border:1px solid var(--rule);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--paper-dim)}
+  .scenario-status.real{border-color:var(--amber);color:var(--paper)}
+  .secondary-config{display:none;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:14px}
+  .secondary-config.show{display:grid}
+  .secondary-card{border:1px solid var(--rule);padding:13px;background:rgba(255,255,255,.018)}
+  .secondary-card .sec-name{font-weight:600;margin-bottom:8px}
+  .secondary-card .sec-label{display:block;font-size:11px;color:var(--paper-dim);margin-bottom:5px}
+  .secondary-card select{width:100%}
+  @media(max-width:760px){.scenario-head{flex-direction:column}.scenario-toggle{white-space:normal}}
   footer{
     padding: 26px clamp(16px,5vw,56px) 40px;
     border-top: 1px solid var(--rule);
@@ -372,6 +366,7 @@
     color: var(--paper-dim);
   }
   footer b{ color: var(--paper); font-weight:500; }
+.lang-flag{width:20px;height:14px;display:inline-block;vertical-align:-2px;border-radius:2px;box-shadow:0 0 0 1px rgba(255,255,255,.14)}
 </style>
 </head>
 <body>
@@ -380,11 +375,13 @@
   <button class="lang-btn active" id="btnLangPt" type="button" aria-pressed="true">
     <svg viewBox="0 0 20 14"><rect width="20" height="14" fill="#009739"/><polygon points="10,2 18,7 10,12 2,7" fill="#fedd00"/><circle cx="10" cy="7" r="3.2" fill="#012169"/></svg>
     Português
-  </button>
-  <button class="lang-btn" id="btnLangEn" type="button" aria-pressed="false">
-    <svg viewBox="0 0 20 14"><rect width="20" height="14" fill="#b22234"/><rect y="1.08" width="20" height="1.08" fill="#fff"/><rect y="3.23" width="20" height="1.08" fill="#fff"/><rect y="5.38" width="20" height="1.08" fill="#fff"/><rect y="7.54" width="20" height="1.08" fill="#fff"/><rect y="9.69" width="20" height="1.08" fill="#fff"/><rect y="11.85" width="20" height="1.08" fill="#fff"/><rect width="9" height="7.54" fill="#3c3b6e"/></svg>
-    English
-  </button>
+  </button><button class="lang-btn" id="btnLangEn" type="button" aria-pressed="false" title="English (United States)">
+    <svg class="lang-flag" viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#b22234"/><path d="M0 1h20M0 3h20M0 5h20M0 7h20M0 9h20M0 11h20M0 13h20" stroke="#fff" stroke-width="1"/><rect width="9" height="7.5" fill="#3c3b6e"/></svg>
+    English</button><button class="lang-btn" id="btnLangAr" type="button" aria-pressed="false" title="العربية (السعودية)">
+    <svg class="lang-flag" viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#006c35"/><text x="10" y="8.7" text-anchor="middle" font-size="3.4" fill="#fff">شهادة</text><path d="M5 10.5h10" stroke="#fff" stroke-width=".45"/></svg>
+    العربية</button><button class="lang-btn" id="btnLangRu" type="button" aria-pressed="false" title="Русский (Россия)">
+    <svg class="lang-flag" viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="4.67" fill="#fff"/><rect y="4.67" width="20" height="4.67" fill="#0039a6"/><rect y="9.34" width="20" height="4.66" fill="#d52b1e"/></svg>
+    Русский</button>
 </div>
 
 <header>
@@ -393,7 +390,7 @@
     <h1 data-i18n-html="title"><span data-i18n="titleWord">Suprimentos</span></h1>
   </div>
   <div class="doc-id">
-    <span data-i18n="docForm">FORMULÁRIO</span> <b>MH-3041</b><br>
+    <span data-i18n="docForm">FORMULÁRIO</span><br>
     <span data-i18n="docTarget">ALVO: Main Hall Lv.30 – 41</span><br>
     <span data-i18n="docScenario">CENÁRIO:</span> <b data-i18n="worstCaseLabel">pior caso</b>
   </div>
@@ -474,21 +471,20 @@
     </div>
   </section>
 
+
   <section class="panel scenario-panel" id="scenarioPanel">
     <div class="scenario-head">
       <div>
-        <p class="section-label">Cenário real das construções exigidas</p>
-        <p class="scenario-sub">Por padrão, o simulador usa o pior caso. Ative esta opção para informar o nível que cada construção secundária realmente possui.</p>
+        <p class="section-label" data-i18n="scenarioTitle">Cenário real das construções exigidas</p>
+        <p class="scenario-sub" data-i18n="scenarioSub">Por padrão, o simulador usa o pior caso. Ative esta opção para informar o nível que cada construção secundária realmente possui.</p>
       </div>
       <label class="scenario-toggle">
         <input type="checkbox" id="chkRealScenario">
         <span class="toggle-track"></span>
-        <span>Usar meu cenário real</span>
+        <span data-i18n="useRealScenario">Usar meu cenário real</span>
       </label>
     </div>
-    <div id="scenarioStatus" class="scenario-status">
-      Cenário pessimista ativo — serão usados os níveis mínimos necessários.
-    </div>
+    <div id="scenarioStatus" class="scenario-status" data-i18n="scenarioWorst">Cenário pessimista ativo — serão usados os níveis mínimos necessários.</div>
     <div id="secondaryConfig" class="secondary-config"></div>
   </section>
 
@@ -558,110 +554,111 @@
      ========================================================= */
   const T = {
     pt: {
-      eyebrow: 'Age of Origins — Central de Construção',
-      title: '<span data-i18n="titleWord">Suprimentos</span>',
-      titlePrefix: 'Registro de',
-      titleWord: 'Suprimentos',
-      docForm: 'FORMULÁRIO',
-      docTarget: 'ALVO: Main Hall Lv.30 – 41',
-      docScenario: 'CENÁRIO:',
-      worstCaseLabel: 'pior caso',
-      currentMHLevel: 'Nível atual do Main Hall',
-      desiredLevel: 'Nível desejado',
-      calcButton: 'Calcular requisição',
-      formError: 'O nível desejado precisa ser maior que o nível atual.',
-      extraSection: 'Construções adicionais (opcional)',
-      factory: 'Fábrica', camp: 'Acampamento', workshop: 'Workshop',
-      currentFactoryLevel: 'Nível atual da Fábrica',
-      desiredFactoryLevel: 'Nível desejado da Fábrica',
-      factoryHint: 'A Fábrica só sobe até o mesmo nível do Main Hall — mas você escolhe até onde quer levá-la, independente do alvo do Main Hall.',
-      currentCampLevel: 'Nível atual do Acampamento',
-      desiredCampLevel: 'Nível desejado do Acampamento',
-      campHint: 'Mesma lógica: o Acampamento é limitado ao nível do Main Hall, mas pode ficar em um alvo próprio, diferente do Main Hall.',
-      currentWorkshopLevel: 'Nível atual do Workshop',
-      desiredWorkshopLevel: 'Nível desejado do Workshop',
-      workshopHint: 'A wiki só documenta o Workshop até o nível 38 — o seletor de alvo não passa disso.',
-      totalRequiredPrefix: 'Total de recursos exigido',
-      stampCalculated: 'Requisição calculada',
-      food: 'Comida', oil: 'Óleo', steel: 'Aço', rareEarth: 'Terra Rara', uranium: 'Urânio',
-      breakdownTitle: 'Divisão por construção',
-      notesTitle: 'Construções exigidas, nível a nível (Main Hall)',
-      notesSub: 'Cada linha soma o Main Hall + a Muralha + a construção secundária daquele nível, considerando o cenário pessimista (construção secundária o mais atrasada possível em relação ao Main Hall).',
-      finalNote: '<b>Nota:</b> os valores do Main Hall partem do pior caso relatado pela wiki (aozcodes.com) — ou seja, assumem que Muralha e a construção secundária de cada etapa não foram niveladas com antecedência. Fábrica, Acampamento e Workshop seguem regra diferente: elas não têm construção secundária própria, só exigem que o Main Hall já esteja naquele nível — por isso o cálculo delas depende do nível atual que você informou para cada uma, não de um "pior caso" automático.',
-      memoryTitle: 'Memória de cálculo',
-      memorySub: 'Cada construção somada separadamente (Main Hall, Muralha e construção secundária), nível a nível, exatamente como entrou na conta.',
-      footerText: 'Desenvolvido por <b>Felipe Miranda</b>',
-      wall: 'Muralha',
-      mainHall: 'Main Hall',
-      secondary: 'secundária',
-      grandTotal: 'Total geral',
-      buildingCol: 'Construção',
-      levelCol: 'Nível',
-      totalRow: 'Total',
-      subtotalRow: 'Subtotal',
-      startingFrom: 'partindo de',
-      justUnlocked: 'recém desbloqueada',
-      alreadyAt: 'já em',
-      noNeedToUpgrade: 'não precisa subir',
-      worstCaseParen: 'pior caso',
-      secNames: { reconCenter:'Recon Center', garage:'Garagem', depot:'Depósito', embassy:'Embaixada', hospital:'Hospital' },
-      mainHallBreakdownName: 'Main Hall + Muralha + secundária',
-      mainHallMemoryTitle: (from,to) => `Main Hall Lv.${from} → Lv.${to} (+ Muralha + secundária)`,
-      buildingMemoryTitle: (name, from, to) => `${name} Lv.${from} → Lv.${to}`,
-      buildingBreakdownName: (name, to) => `${name} (→ Lv.${to})`,
+      eyebrow:'Age of Origins — Central de Construção', titlePrefix:'Requisição de', titleWord:'Recursos',
+      docForm:'FORMULÁRIO', docTarget:'ALVO: Main Hall Lv.30 – 41', docScenario:'CENÁRIO:', worstCaseLabel:'pior caso',
+      currentMHLevel:'Nível atual do Main Hall', desiredLevel:'Nível desejado', calcButton:'Calcular requisição',
+      formError:'O nível desejado precisa ser maior que o nível atual.', extraSection:'Construções adicionais (opcional)',
+      factory:'Fábrica', camp:'Acampamento', workshop:'Workshop',
+      currentFactoryLevel:'Nível atual da Fábrica', desiredFactoryLevel:'Nível desejado da Fábrica',
+      factoryHint:'A Fábrica só sobe até o mesmo nível do Main Hall — mas você escolhe até onde quer levá-la, independente do alvo do Main Hall.',
+      currentCampLevel:'Nível atual do Acampamento', desiredCampLevel:'Nível desejado do Acampamento',
+      campHint:'Mesma lógica: o Acampamento é limitado ao nível do Main Hall, mas pode ficar em um alvo próprio, diferente do Main Hall.',
+      currentWorkshopLevel:'Nível atual do Workshop', desiredWorkshopLevel:'Nível desejado do Workshop',
+      workshopHint:'A wiki só documenta o Workshop até o nível 38 — o seletor de alvo não passa disso.',
+      scenarioTitle:'Cenário real das construções exigidas', scenarioSub:'Por padrão, o simulador usa o pior caso. Ative esta opção para informar o nível que cada construção secundária realmente possui.',
+      useRealScenario:'Usar meu cenário real', scenarioWorst:'Cenário pessimista ativo — serão usados os níveis mínimos necessários.',
+      scenarioReal:'Cenário real ativo — serão usados os níveis atuais informados.', currentSecondary:'Nível atual', minimumRequired:'Mínimo necessário',
+      totalRequiredPrefix:'Total de recursos exigido', stampCalculated:'Requisição calculada',
+      food:'Comida', oil:'Óleo', steel:'Aço', rareEarth:'Terra Rara', uranium:'Urânio',
+      breakdownTitle:'Divisão por construção', notesTitle:'Construções exigidas, nível a nível (Main Hall)',
+      notesSub:'Cada linha soma o Main Hall + a Muralha + a construção secundária daquele nível.',
+      finalNote:'<b>Nota:</b> no cenário pessimista, são considerados os níveis mínimos necessários de cada construção secundária. No cenário real, informe o nível atual de cada construção para calcular somente o que ainda falta. Fábrica, Acampamento e Workshop seguem regra própria.',
+      memoryTitle:'Memória de cálculo', memorySub:'Cada construção somada separadamente (Main Hall, Muralha e construção secundária), nível a nível, exatamente como entrou na conta.',
+      footerText:'Desenvolvido por <b>Felipe Miranda</b>', wall:'Muralha', mainHall:'Main Hall', secondary:'secundária', grandTotal:'Total geral',
+      buildingCol:'Construção', levelCol:'Nível', totalRow:'Total', subtotalRow:'Subtotal', startingFrom:'partindo de', justUnlocked:'recém desbloqueada',
+      alreadyAt:'já em', noNeedToUpgrade:'não precisa subir', worstCaseParen:'pior caso',
+      secNames:{reconCenter:'Recon Center',garage:'Garagem',depot:'Depósito',embassy:'Embaixada',hospital:'Hospital'},
+      mainHallBreakdownName:'Main Hall + Muralha + secundária',
+      mainHallMemoryTitle:(from,to)=>`Main Hall Lv.${from} → Lv.${to} (+ Muralha + secundária)`,
+      buildingMemoryTitle:(name,from,to)=>`${name} Lv.${from} → Lv.${to}`, buildingBreakdownName:(name,to)=>`${name} (→ Lv.${to})`
     },
     en: {
-      eyebrow: 'Age of Origins — Supply Command',
-      title: '<span data-i18n="titleWord">Requisition</span>',
-      titlePrefix: 'Supply',
-      titleWord: 'Requisition',
-      docForm: 'FORM',
-      docTarget: 'TARGET: Main Hall Lv.30 – 41',
-      docScenario: 'SCENARIO:',
-      worstCaseLabel: 'worst case',
-      currentMHLevel: 'Current Main Hall level',
-      desiredLevel: 'Desired level',
-      calcButton: 'Calculate requisition',
-      formError: 'The desired level must be higher than the current level.',
-      extraSection: 'Additional buildings (optional)',
-      factory: 'Factory', camp: 'Camp', workshop: 'Workshop',
-      currentFactoryLevel: 'Current Factory level',
-      desiredFactoryLevel: 'Desired Factory level',
-      factoryHint: 'The Factory only levels up to the same level as the Main Hall — but you choose how far to take it, independent of the Main Hall target.',
-      currentCampLevel: 'Current Camp level',
-      desiredCampLevel: 'Desired Camp level',
-      campHint: 'Same logic: the Camp is capped by the Main Hall level, but it can have its own target, different from the Main Hall.',
-      currentWorkshopLevel: 'Current Workshop level',
-      desiredWorkshopLevel: 'Desired Workshop level',
-      workshopHint: 'The wiki only documents the Workshop up to level 38 — the target selector does not go beyond that.',
-      totalRequiredPrefix: 'Total resources required',
-      stampCalculated: 'Requisition calculated',
-      food: 'Food', oil: 'Oil', steel: 'Steel', rareEarth: 'Rare Earth', uranium: 'Uranium',
-      breakdownTitle: 'Breakdown by building',
-      notesTitle: 'Required buildings, level by level (Main Hall)',
-      notesSub: 'Each line sums the Main Hall + the City Wall + that level\'s secondary building, using the worst-case scenario (secondary building as far behind the Main Hall as possible).',
-      finalNote: '<b>Note:</b> Main Hall values follow the worst case reported by the wiki (aozcodes.com) — meaning City Wall and each stage\'s secondary building were assumed not to have been leveled ahead of time. Factory, Camp and Workshop follow a different rule: they have no secondary building of their own, they only require the Main Hall to already be at that level — so their calculation depends on the current level you entered for each one, not an automatic "worst case".',
-      memoryTitle: 'Calculation breakdown',
-      memorySub: 'Each building summed separately (Main Hall, City Wall and secondary building), level by level, exactly as it entered the total.',
-      footerText: 'Developed by <b>Felipe Miranda</b>',
-      wall: 'City Wall',
-      mainHall: 'Main Hall',
-      secondary: 'secondary',
-      grandTotal: 'Grand total',
-      buildingCol: 'Building',
-      levelCol: 'Level',
-      totalRow: 'Total',
-      subtotalRow: 'Subtotal',
-      startingFrom: 'starting from',
-      justUnlocked: 'just unlocked',
-      alreadyAt: 'already at',
-      noNeedToUpgrade: 'no need to upgrade',
-      worstCaseParen: 'worst case',
-      secNames: { reconCenter:'Recon Center', garage:'Garage', depot:'Depot', embassy:'Embassy', hospital:'Hospital' },
-      mainHallBreakdownName: 'Main Hall + City Wall + secondary',
-      mainHallMemoryTitle: (from,to) => `Main Hall Lv.${from} → Lv.${to} (+ City Wall + secondary)`,
-      buildingMemoryTitle: (name, from, to) => `${name} Lv.${from} → Lv.${to}`,
-      buildingBreakdownName: (name, to) => `${name} (→ Lv.${to})`,
+      eyebrow:'Age of Origins — Construction Command', titlePrefix:'Resource', titleWord:'Requisition',
+      docForm:'FORM', docTarget:'TARGET: Main Hall Lv.30 – 41', docScenario:'SCENARIO:', worstCaseLabel:'worst case',
+      currentMHLevel:'Current Main Hall level', desiredLevel:'Desired level', calcButton:'Calculate requisition',
+      formError:'The desired level must be higher than the current level.', extraSection:'Additional buildings (optional)',
+      factory:'Factory', camp:'Camp', workshop:'Workshop', currentFactoryLevel:'Current Factory level', desiredFactoryLevel:'Desired Factory level',
+      factoryHint:'The Factory only levels up to the same level as the Main Hall — but you choose how far to take it, independent of the Main Hall target.',
+      currentCampLevel:'Current Camp level', desiredCampLevel:'Desired Camp level',
+      campHint:'The Camp is capped by the Main Hall level, but it can have its own target, independent of the Main Hall.',
+      currentWorkshopLevel:'Current Workshop level', desiredWorkshopLevel:'Desired Workshop level',
+      workshopHint:'The wiki only documents the Workshop up to level 38 — the target selector does not go beyond that.',
+      scenarioTitle:'Real scenario for required buildings', scenarioSub:'By default, the simulator uses the worst case. Enable this option to enter the actual level of each required secondary building.',
+      useRealScenario:'Use my real scenario', scenarioWorst:'Worst-case scenario active — minimum required levels will be used.',
+      scenarioReal:'Real scenario active — the current levels you entered will be used.', currentSecondary:'Current level', minimumRequired:'Minimum required',
+      totalRequiredPrefix:'Total resources required', stampCalculated:'Requisition calculated',
+      food:'Food', oil:'Oil', steel:'Steel', rareEarth:'Rare Earth', uranium:'Uranium',
+      breakdownTitle:'Breakdown by building', notesTitle:'Required buildings, level by level (Main Hall)',
+      notesSub:'Each line sums the Main Hall + City Wall + the secondary building required for that level.',
+      finalNote:'<b>Note:</b> in worst-case mode, the minimum required level of each secondary building is assumed. In real-scenario mode, enter the current level of each building so the calculator includes only what is still missing. Factory, Camp and Workshop follow their own rule.',
+      memoryTitle:'Calculation breakdown', memorySub:'Each building is summed separately (Main Hall, City Wall and secondary building), level by level, exactly as included in the calculation.',
+      footerText:'Developed by <b>Felipe Miranda</b>', wall:'City Wall', mainHall:'Main Hall', secondary:'secondary', grandTotal:'Grand total',
+      buildingCol:'Building', levelCol:'Level', totalRow:'Total', subtotalRow:'Subtotal', startingFrom:'starting from', justUnlocked:'just unlocked',
+      alreadyAt:'already at', noNeedToUpgrade:'no upgrade needed', worstCaseParen:'worst case',
+      secNames:{reconCenter:'Recon Center',garage:'Garage',depot:'Depot',embassy:'Embassy',hospital:'Hospital'},
+      mainHallBreakdownName:'Main Hall + City Wall + secondary',
+      mainHallMemoryTitle:(from,to)=>`Main Hall Lv.${from} → Lv.${to} (+ City Wall + secondary)`,
+      buildingMemoryTitle:(name,from,to)=>`${name} Lv.${from} → Lv.${to}`, buildingBreakdownName:(name,to)=>`${name} (→ Lv.${to})`
+    },
+    ar: {
+      eyebrow:'Age of Origins — قيادة البناء', titlePrefix:'طلب', titleWord:'الموارد',
+      docForm:'نموذج', docTarget:'الهدف: Main Hall المستوى 30 – 41', docScenario:'السيناريو:', worstCaseLabel:'أسوأ حالة',
+      currentMHLevel:'المستوى الحالي للـ Main Hall', desiredLevel:'المستوى المطلوب', calcButton:'حساب الطلب',
+      formError:'يجب أن يكون المستوى المطلوب أعلى من المستوى الحالي.', extraSection:'المباني الإضافية (اختياري)',
+      factory:'المصنع', camp:'المعسكر', workshop:'الورشة', currentFactoryLevel:'المستوى الحالي للمصنع', desiredFactoryLevel:'المستوى المطلوب للمصنع',
+      factoryHint:'المصنع محدود بمستوى Main Hall، ويمكنك تحديد هدفه بشكل مستقل.', currentCampLevel:'المستوى الحالي للمعسكر', desiredCampLevel:'المستوى المطلوب للمعسكر',
+      campHint:'المعسكر محدود بمستوى Main Hall، ويمكن تحديد هدفه بشكل مستقل.', currentWorkshopLevel:'المستوى الحالي للورشة', desiredWorkshopLevel:'المستوى المطلوب للورشة',
+      workshopHint:'المعلومات المتاحة للورشة تصل حتى المستوى 38.', scenarioTitle:'السيناريو الفعلي للمباني المطلوبة',
+      scenarioSub:'افتراضياً يستخدم المحاكي أسوأ حالة. فعّل هذا الخيار لإدخال المستوى الفعلي لكل مبنى ثانوي مطلوب.',
+      useRealScenario:'استخدام السيناريو الفعلي', scenarioWorst:'سيناريو أسوأ حالة نشط — سيتم استخدام الحد الأدنى المطلوب.',
+      scenarioReal:'السيناريو الفعلي نشط — سيتم استخدام المستويات التي أدخلتها.', currentSecondary:'المستوى الحالي', minimumRequired:'الحد الأدنى المطلوب',
+      totalRequiredPrefix:'إجمالي الموارد المطلوبة', stampCalculated:'تم حساب الطلب', food:'طعام', oil:'نفط', steel:'فولاذ', rareEarth:'معادن نادرة', uranium:'يورانيوم',
+      breakdownTitle:'التفصيل حسب المبنى', notesTitle:'المباني المطلوبة، مستوى بمستوى (Main Hall)',
+      notesSub:'كل سطر يجمع Main Hall + سور المدينة + المبنى الثانوي المطلوب لذلك المستوى.',
+      finalNote:'<b>ملاحظة:</b> في أسوأ حالة يتم افتراض الحد الأدنى المطلوب لكل مبنى ثانوي. في السيناريو الفعلي أدخل المستوى الحالي لكل مبنى لحساب ما تبقى فقط.',
+      memoryTitle:'تفصيل الحساب', memorySub:'كل مبنى محسوب بشكل منفصل، مستوى بمستوى.', footerText:'تم التطوير بواسطة <b>Felipe Miranda</b>',
+      wall:'سور المدينة', mainHall:'Main Hall', secondary:'ثانوي', grandTotal:'الإجمالي العام', buildingCol:'المبنى', levelCol:'المستوى',
+      totalRow:'الإجمالي', subtotalRow:'المجموع الفرعي', startingFrom:'بدءاً من', justUnlocked:'تم فتحه للتو', alreadyAt:'موجود بالفعل عند',
+      noNeedToUpgrade:'لا يحتاج إلى ترقية', worstCaseParen:'أسوأ حالة',
+      secNames:{reconCenter:'مركز الاستطلاع',garage:'المرآب',depot:'المستودع',embassy:'السفارة',hospital:'المستشفى'},
+      mainHallBreakdownName:'Main Hall + سور المدينة + المبنى الثانوي',
+      mainHallMemoryTitle:(from,to)=>`Main Hall المستوى ${from} → ${to}`, buildingMemoryTitle:(name,from,to)=>`${name} المستوى ${from} → ${to}`,
+      buildingBreakdownName:(name,to)=>`${name} (→ المستوى ${to})`
+    },
+    ru: {
+      eyebrow:'Age of Origins — Командование строительством', titlePrefix:'Заявка на', titleWord:'ресурсы',
+      docForm:'ФОРМА', docTarget:'ЦЕЛЬ: Main Hall ур.30 – 41', docScenario:'СЦЕНАРИЙ:', worstCaseLabel:'худший случай',
+      currentMHLevel:'Текущий уровень Main Hall', desiredLevel:'Желаемый уровень', calcButton:'Рассчитать заявку',
+      formError:'Желаемый уровень должен быть выше текущего.', extraSection:'Дополнительные здания (необязательно)',
+      factory:'Фабрика', camp:'Лагерь', workshop:'Мастерская', currentFactoryLevel:'Текущий уровень фабрики', desiredFactoryLevel:'Желаемый уровень фабрики',
+      factoryHint:'Фабрика ограничена уровнем Main Hall, но её цель задаётся отдельно.', currentCampLevel:'Текущий уровень лагеря', desiredCampLevel:'Желаемый уровень лагеря',
+      campHint:'Лагерь ограничен уровнем Main Hall, но его цель задаётся отдельно.', currentWorkshopLevel:'Текущий уровень мастерской', desiredWorkshopLevel:'Желаемый уровень мастерской',
+      workshopHint:'Для мастерской данные доступны только до уровня 38.', scenarioTitle:'Фактический сценарий требуемых зданий',
+      scenarioSub:'По умолчанию используется худший случай. Включите эту опцию, чтобы указать фактический уровень каждого требуемого вторичного здания.',
+      useRealScenario:'Использовать мой фактический сценарий', scenarioWorst:'Активен худший случай — используются минимально необходимые уровни.',
+      scenarioReal:'Активен фактический сценарий — используются указанные вами текущие уровни.', currentSecondary:'Текущий уровень', minimumRequired:'Минимально необходимый',
+      totalRequiredPrefix:'Всего требуется ресурсов', stampCalculated:'Заявка рассчитана', food:'Еда', oil:'Нефть', steel:'Сталь', rareEarth:'Редкоземельные', uranium:'Уран',
+      breakdownTitle:'Разбивка по зданиям', notesTitle:'Требуемые здания по уровням (Main Hall)',
+      notesSub:'Каждая строка суммирует Main Hall + городскую стену + вторичное здание, требуемое для этого уровня.',
+      finalNote:'<b>Примечание:</b> в худшем случае используется минимально необходимый уровень каждого вторичного здания. В фактическом сценарии учитывается только то, что ещё необходимо улучшить.',
+      memoryTitle:'Расчёт', memorySub:'Каждое здание суммируется отдельно, уровень за уровнем.', footerText:'Разработано <b>Felipe Miranda</b>',
+      wall:'Городская стена', mainHall:'Main Hall', secondary:'вторичное', grandTotal:'Общий итог', buildingCol:'Здание', levelCol:'Уровень',
+      totalRow:'Итого', subtotalRow:'Промежуточный итог', startingFrom:'начиная с', justUnlocked:'только открыто', alreadyAt:'уже на',
+      noNeedToUpgrade:'улучшение не требуется', worstCaseParen:'худший случай',
+      secNames:{reconCenter:'Разведцентр',garage:'Гараж',depot:'Склад',embassy:'Посольство',hospital:'Госпиталь'},
+      mainHallBreakdownName:'Main Hall + городская стена + вторичное',
+      mainHallMemoryTitle:(from,to)=>`Main Hall ур.${from} → ур.${to}`, buildingMemoryTitle:(name,from,to)=>`${name} ур.${from} → ур.${to}`,
+      buildingBreakdownName:(name,to)=>`${name} (→ ур.${to})`
     }
   };
 
@@ -670,72 +667,6 @@
   /* =========================================================
      DADOS — Main Hall: cada nível decomposto em Main Hall + Muralha + Secundária
      ========================================================= */
-  /*
-   * Custos unitários das construções secundárias.
-   * O simulador usa estes valores para cobrar somente do nível real
-   * informado pelo jogador até o nível exigido.
-   */
-  const SECONDARY_DATA = {
-    garage: {
-      rows: {
-        31:{food:0,oil:19914230,steel:3982850,minerals:2655240,uranium:18980},
-        32:{food:0,oil:25493100,steel:5098010,minerals:3398680,uranium:31390},
-        33:{food:0,oil:32117590,steel:6423500,minerals:4282340,uranium:54520},
-        34:{food:0,oil:39825910,steel:7965180,minerals:5310120,uranium:82580},
-        35:{food:0,oil:49384210,steel:9875810,minerals:6583880,uranium:122450},
-        36:{food:0,oil:55325220,steel:11065000,minerals:7376660,uranium:154250},
-        37:{food:0,oil:60771160,steel:12154180,minerals:8102780,uranium:185580},
-        38:{food:0,oil:66214820,steel:13242900,minerals:8828600,uranium:224590},
-        39:{food:0,oil:66221440,steel:13244220,minerals:8829470,uranium:256460},
-        40:{food:0,oil:66228060,steel:13245540,minerals:8830350,uranium:291100},
-        41:{food:0,oil:67234680,steel:13246860,minerals:8831230,uranium:326280}
-      }
-    },
-    depot: {
-      rows: {
-        31:{food:7436130,oil:7436130,steel:2082110,minerals:1189770,uranium:7440},
-        32:{food:9971450,oil:9971450,steel:2791990,minerals:1595410,uranium:12300},
-        33:{food:13135200,oil:13135200,steel:3677830,minerals:2101600,uranium:21390},
-        34:{food:16995840,oil:16995840,steel:4758800,minerals:2719290,uranium:32400},
-        35:{food:21952950,oil:21952950,steel:6146780,minerals:3512410,uranium:48050},
-        36:{food:24403340,oil:24403340,steel:6832880,minerals:3904460,uranium:57190},
-        37:{food:26633590,oil:26633590,steel:7457340,minerals:4261290,uranium:65910},
-        38:{food:28862940,oil:28862940,steel:8081550,minerals:4617980,uranium:75800}
-      }
-    },
-    embassy: {
-      rows: {
-        31:{food:0,oil:11238000,steel:2247590,minerals:1498390,uranium:7440},
-        32:{food:0,oil:14384540,steel:2876900,minerals:1917930,uranium:12300},
-        33:{food:0,oil:18124440,steel:3624860,minerals:2416560,uranium:21300},
-        34:{food:0,oil:22474360,steel:4494830,minerals:2996540,uranium:32400},
-        35:{food:0,oil:27868250,steel:5573590,minerals:3715710,uranium:48050},
-        36:{food:0,oil:30862470,steel:6172420,minerals:4114910,uranium:57190},
-        37:{food:0,oil:33577420,steel:6715400,minerals:4476910,uranium:65010},
-        38:{food:0,oil:36291010,steel:7258110,minerals:4838710,uranium:75800},
-        39:{food:0,oil:36294630,steel:7258830,minerals:4839190,uranium:83400},
-        40:{food:0,oil:36298250,steel:7339550,minerals:4849670,uranium:91750},
-        41:{food:0,oil:36301870,steel:7260279,minerals:4840150,uranium:100960}
-      }
-    },
-    hospital: {
-      rows: {
-        31:{food:18161330,oil:10896790,steel:4068120,minerals:2324640,uranium:12240},
-        32:{food:24003550,oil:14402120,steel:5376770,minerals:3072440,uranium:21510},
-        33:{food:30244430,oil:18146640,steel:6774720,minerals:3871260,uranium:35660},
-        34:{food:37503100,oil:22501839,steel:8400659,minerals:4800360,uranium:54000},
-        35:{food:46503930,oil:27902320,steel:10416820,minerals:5952450,uranium:80100},
-        36:{food:52849000,oil:31709350,steel:11758100,minerals:6764610,uranium:98280},
-        37:{food:58853580,oil:35312090,steel:13183110,minerals:7533180,uranium:116310},
-        38:{food:64984710,oil:38990760,steel:14556470,minerals:8317950,uranium:137690},
-        39:{food:64991200,oil:38994650,steel:14557920,minerals:8318780,uranium:151460},
-        40:{food:64997690,oil:38998540,steel:14559370,minerals:8319610,uranium:166610},
-        41:{food:65004180,oil:39002430,steel:14560820,minerals:8320440,uranium:183280}
-      }
-    },
-    reconCenter: { rows: { 31:{food:0,oil:0,steel:0,minerals:0,uranium:0} } }
-  };
-
   const MAIN_HALL_LEVELS = [
     { level:31, mainHall:{food:136690750,oil:136690750,steel:38273410,minerals:21870520,uranium:49270},
       wallToLv:30, wall:{food:0,oil:64652570,steel:12930510,minerals:8620340,uranium:0},
@@ -793,6 +724,75 @@
       secondary:{food:0,oil:108883890,steel:21856490,minerals:14527570,uranium:250950} },
   ];
 
+
+  const SECONDARY_DATA = {
+    garage:{
+      31:{food:0,oil:19914230,steel:3982850,minerals:2655240,uranium:18980},32:{food:0,oil:25493100,steel:5098010,minerals:3398680,uranium:31390},
+      33:{food:0,oil:32117590,steel:6423500,minerals:4282340,uranium:54520},34:{food:0,oil:39825910,steel:7965180,minerals:5310120,uranium:82580},
+      35:{food:0,oil:49384210,steel:9875810,minerals:6583880,uranium:122450},36:{food:0,oil:55325220,steel:11065000,minerals:7376660,uranium:154250},
+      37:{food:0,oil:60771160,steel:12154180,minerals:8102780,uranium:185580},38:{food:0,oil:66214820,steel:13242900,minerals:8828600,uranium:224590},
+      39:{food:0,oil:66221440,steel:13244220,minerals:8829470,uranium:256460},40:{food:0,oil:66228060,steel:13245540,minerals:8830350,uranium:291100}
+    },
+    depot:{
+      31:{food:7436130,oil:7436130,steel:2082110,minerals:1189770,uranium:7440},32:{food:9971450,oil:9971450,steel:2791990,minerals:1595410,uranium:12300},
+      33:{food:13135200,oil:13135200,steel:3677830,minerals:2101600,uranium:21390},34:{food:16995840,oil:16995840,steel:4758800,minerals:2719290,uranium:32400},
+      35:{food:21952950,oil:21952950,steel:6146780,minerals:3512410,uranium:48050},36:{food:24403340,oil:24403340,steel:6832880,minerals:3904460,uranium:57190},
+      37:{food:26633590,oil:26633590,steel:7457340,minerals:4261290,uranium:65910},38:{food:28862940,oil:28862940,steel:8081550,minerals:4617980,uranium:75800}
+    },
+    embassy:{
+      31:{food:0,oil:11238000,steel:2247590,minerals:1498390,uranium:7440},32:{food:0,oil:14384540,steel:2876900,minerals:1917930,uranium:12300},
+      33:{food:0,oil:18124440,steel:3624860,minerals:2416560,uranium:21300},34:{food:0,oil:22474360,steel:4494830,minerals:2996540,uranium:32400},
+      35:{food:0,oil:27868250,steel:5573590,minerals:3715710,uranium:48050},36:{food:0,oil:30862470,steel:6172420,minerals:4114910,uranium:57190},
+      37:{food:0,oil:33577420,steel:6715400,minerals:4476910,uranium:65010},38:{food:0,oil:36291010,steel:7258110,minerals:4838710,uranium:75800},
+      39:{food:0,oil:36294630,steel:7258830,minerals:4839190,uranium:83400},40:{food:0,oil:36298250,steel:7339550,minerals:4849670,uranium:91750}
+    },
+    hospital:{
+      31:{food:18161330,oil:10896790,steel:4068120,minerals:2324640,uranium:12240},32:{food:24003550,oil:14402120,steel:5376770,minerals:3072440,uranium:21510},
+      33:{food:30244430,oil:18146640,steel:6774720,minerals:3871260,uranium:35660},34:{food:37503100,oil:22501839,steel:8400659,minerals:4800360,uranium:54000},
+      35:{food:46503930,oil:27902320,steel:10416820,minerals:5952450,uranium:80100},36:{food:52849000,oil:31709350,steel:11758100,minerals:6764610,uranium:98280},
+      37:{food:58853580,oil:35312090,steel:13183110,minerals:7533180,uranium:116310},38:{food:64984710,oil:38990760,steel:14556470,minerals:8317950,uranium:137690}
+    }
+  };
+  function zeroRes(){return {food:0,oil:0,steel:0,minerals:0,uranium:0};}
+  function addRes(a,b){a.food+=b.food||0;a.oil+=b.oil||0;a.steel+=b.steel||0;a.minerals+=b.minerals||0;a.uranium+=b.uranium||0;return a;}
+  function secondarySum(key,fromLevel,toLevel){const d=SECONDARY_DATA[key]||{},a=zeroRes();for(let lv=fromLevel+1;lv<=toLevel;lv++)if(d[lv])addRes(a,d[lv]);return a;}
+  function getScenarioCurrent(key,fallback){const el=document.getElementById('secCurrent_'+key);return el?parseInt(el.value,10):fallback;}
+  function buildScenarioRows(from,to){
+    const real=document.getElementById('chkRealScenario')?.checked;
+    return MAIN_HALL_LEVELS.filter(d=>d.level>from&&d.level<=to).map(orig=>{
+      const r={...orig,mainHall:{...orig.mainHall},wall:{...orig.wall},secondary:{...orig.secondary}};
+      if(real&&SECONDARY_DATA[r.secondaryKey]){
+        const actual=getScenarioCurrent(r.secondaryKey,r.secondaryFromLv);
+        const start=Math.max(actual,r.secondaryFromLv);
+        r.secondary=secondarySum(r.secondaryKey,start,r.secondaryToLv);
+        r.scenarioActual=actual;r.scenarioStart=start;
+      }
+      return r;
+    });
+  }
+  function renderSecondaryConfig(){
+    const box=document.getElementById('secondaryConfig'),real=document.getElementById('chkRealScenario').checked;
+    const from=parseInt(lvFromSel.value,10),to=parseInt(lvToSel.value,10);
+    const rows=MAIN_HALL_LEVELS.filter(d=>d.level>from&&d.level<=to);
+    const keys=[...new Set(rows.map(r=>r.secondaryKey).filter(k=>SECONDARY_DATA[k]))];
+    box.innerHTML='';box.classList.toggle('show',real&&keys.length>0);const t=T[currentLang];
+    keys.forEach(key=>{
+      const related=rows.filter(r=>r.secondaryKey===key),min=Math.min(...related.map(r=>r.secondaryFromLv)),max=Math.max(...related.map(r=>r.secondaryToLv));
+      const card=document.createElement('div');card.className='secondary-card';
+      const name=document.createElement('div');name.className='sec-name';name.textContent=t.secNames[key];
+      const label=document.createElement('label');label.className='sec-label';label.textContent=t.currentSecondary;
+      const sel=document.createElement('select');sel.id='secCurrent_'+key;
+      for(let lv=min;lv<=max;lv++){const o=document.createElement('option');o.value=lv;o.textContent='Lv. '+lv;sel.appendChild(o);}
+      sel.value=min;
+      const req=document.createElement('div');req.className='sec-label';req.style.marginTop='8px';req.textContent=t.minimumRequired+': Lv.'+min;
+      card.append(name,label,sel,req);box.appendChild(card);
+    });
+  }
+  function syncScenarioUI(){
+    const real=document.getElementById('chkRealScenario').checked,status=document.getElementById('scenarioStatus');
+    status.textContent=T[currentLang][real?'scenarioReal':'scenarioWorst'];status.classList.toggle('real',real);renderSecondaryConfig();
+  }
+
   function levelTotal(entry){
     return {
       food: entry.mainHall.food + entry.wall.food + entry.secondary.food,
@@ -804,15 +804,14 @@
   }
 
   function requirementText(entry){
-    const t = T[currentLang];
-    const secName = t.secNames[entry.secondaryKey];
-    if (entry.alreadyAtTarget){
-      return `${t.wall} ${currentLang==='pt' ? 'até' : 'to'} Lv.${entry.wallToLv}, ${secName} ${t.alreadyAt} Lv.${entry.secondaryToLv} (${t.noNeedToUpgrade})`;
+    const t=T[currentLang],secName=t.secNames[entry.secondaryKey],real=document.getElementById('chkRealScenario')?.checked;
+    const toWord=currentLang==='pt'?'até':currentLang==='en'?'to':'→';
+    if(entry.alreadyAtTarget)return `${t.wall} ${toWord} Lv.${entry.wallToLv}, ${secName} ${t.alreadyAt} Lv.${entry.secondaryToLv} (${t.noNeedToUpgrade})`;
+    if(real&&entry.scenarioActual!=null){
+      if(entry.scenarioStart>=entry.secondaryToLv)return `${t.wall} ${toWord} Lv.${entry.wallToLv}, ${secName} ${t.alreadyAt} Lv.${entry.scenarioActual}`;
+      return `${t.wall} ${toWord} Lv.${entry.wallToLv}, ${secName} Lv.${entry.scenarioStart} → Lv.${entry.secondaryToLv}`;
     }
-    if (entry.justUnlocked){
-      return `${t.wall} ${currentLang==='pt' ? 'até' : 'to'} Lv.${entry.wallToLv}, ${secName} ${currentLang==='pt' ? 'até' : 'to'} Lv.${entry.secondaryToLv} (${t.justUnlocked})`;
-    }
-    const toWord = currentLang==='pt' ? 'até' : 'to';
+    if(entry.justUnlocked)return `${t.wall} ${toWord} Lv.${entry.wallToLv}, ${secName} ${toWord} Lv.${entry.secondaryToLv} (${t.justUnlocked})`;
     return `${t.wall} ${toWord} Lv.${entry.wallToLv}, ${secName} ${toWord} Lv.${entry.secondaryToLv} (${t.worstCaseParen}: ${t.startingFrom} Lv.${entry.secondaryFromLv})`;
   }
 
@@ -899,57 +898,6 @@
   const formError = document.getElementById('formError');
   const result = document.getElementById('result');
 
-  const chkRealScenario = document.getElementById('chkRealScenario');
-  const scenarioStatus = document.getElementById('scenarioStatus');
-  const secondaryConfig = document.getElementById('secondaryConfig');
-
-  function getSecondaryRequirements(from,to){
-    const req={};
-    MAIN_HALL_LEVELS.filter(r=>r.level>from && r.level<=to).forEach(r=>{
-      if(!req[r.secondaryKey]) req[r.secondaryKey]={from:r.secondaryFromLv,target:r.secondaryToLv};
-      else req[r.secondaryKey].target=Math.max(req[r.secondaryKey].target,r.secondaryToLv);
-    });
-    return req;
-  }
-  function secondarySum(key,from,to){
-    const acc={food:0,oil:0,steel:0,minerals:0,uranium:0};
-    const rows=SECONDARY_DATA[key]?.rows||{};
-    for(let lv=from+1;lv<=to;lv++){
-      const r=rows[lv]; if(!r) continue;
-      acc.food+=r.food;acc.oil+=r.oil;acc.steel+=r.steel;acc.minerals+=r.minerals;acc.uranium+=r.uranium;
-    }
-    return acc;
-  }
-  function renderSecondaryConfig(){
-    const req=getSecondaryRequirements(+lvFromSel.value,+lvToSel.value);
-    secondaryConfig.innerHTML='';
-    Object.entries(req).forEach(([key,r])=>{
-      const card=document.createElement('div');card.className='secondary-card';
-      const name=T[currentLang].secNames[key]||key;
-      card.innerHTML=`<div><div class="secondary-name">${name}</div><div class="secondary-target">Necessário até Lv.${r.target}</div></div>`;
-      const field=document.createElement('div');field.className='field';
-      field.innerHTML='<label>Nível atual</label>';
-      const sel=document.createElement('select');sel.dataset.secondaryKey=key;sel.className='secondary-current-select';
-      for(let lv=Math.min(r.from,r.target);lv<=r.target;lv++){const o=document.createElement('option');o.value=lv;o.textContent='Lv. '+lv;sel.appendChild(o)}
-      sel.value=Math.min(r.from,r.target);field.appendChild(sel);card.appendChild(field);
-      const note=document.createElement('div');note.className='secondary-note';
-      const update=()=>note.textContent=(+sel.value<r.target)?'Será cobrado somente do nível informado até o nível necessário.':'Já está no nível necessário; custo adicional = 0.';
-      sel.addEventListener('change',update);update();card.appendChild(note);secondaryConfig.appendChild(card);
-    });
-    secondaryConfig.classList.add('show');
-    scenarioStatus.classList.add('real');
-    scenarioStatus.textContent='Cenário real ativo — o cálculo considera os níveis informados.';
-  }
-  function syncScenario(){
-    if(chkRealScenario.checked) renderSecondaryConfig();
-    else {secondaryConfig.classList.remove('show');scenarioStatus.classList.remove('real');scenarioStatus.textContent='Cenário pessimista ativo — serão usados os níveis mínimos necessários.';}
-  }
-  chkRealScenario.addEventListener('change',syncScenario);
-  lvFromSel.addEventListener('change',syncScenario);
-  lvToSel.addEventListener('change',syncScenario);
-
-
-
   for (let i = MIN_LEVEL; i <= MAX_LEVEL - 1; i++){
     const opt = document.createElement('option');
     opt.value = i; opt.textContent = 'Lv. ' + i;
@@ -1013,7 +961,7 @@
     return s;
   }
   function exact(n){
-    return Math.round(n).toLocaleString(currentLang === 'pt' ? 'pt-BR' : 'en-US');
+    const locales={pt:'pt-BR',en:'en-US',ar:'ar-EG',ru:'ru-RU'}; return Math.round(n).toLocaleString(locales[currentLang]||'en-US');
   }
 
   function sumExtraBuilding(dataTable, fromLevel, toLevel, hardCap){
@@ -1072,8 +1020,13 @@
       block.appendChild(title);
       block.appendChild(memRow(t.mainHall, r.mainHall));
       block.appendChild(memRow(`${t.wall} Lv.${r.wallToLv}`, r.wall));
-      const secLabel = `${t.secNames[r.secondaryKey]} ${r.secondaryFromLv === r.secondaryToLv ? ('Lv.'+r.secondaryToLv) : ('Lv.'+(r.secondaryFromLv+1)+'-'+r.secondaryToLv)}`;
-      block.appendChild(memRow(secLabel, r.secondary));
+      let secLabel;
+      if(document.getElementById('chkRealScenario')?.checked && r.scenarioActual!=null){
+        secLabel=r.scenarioStart>=r.secondaryToLv ? `${t.secNames[r.secondaryKey]} Lv.${r.scenarioActual} (${t.noNeedToUpgrade})` : `${t.secNames[r.secondaryKey]} Lv.${r.scenarioStart} → Lv.${r.secondaryToLv}`;
+      }else{
+        secLabel=`${t.secNames[r.secondaryKey]} ${r.secondaryFromLv===r.secondaryToLv?('Lv.'+r.secondaryToLv):('Lv.'+(r.secondaryFromLv+1)+'-'+r.secondaryToLv)}`;
+      }
+      block.appendChild(memRow(secLabel,r.secondary));
       block.appendChild(memRow(t.subtotalRow, levelTotal(r), 'subtotal'));
       wrap.appendChild(block);
     });
@@ -1125,52 +1078,16 @@
       workshop: document.getElementById('chkWorkshop').checked ? { level: parseInt(lvWorkshopSel.value,10), target: parseInt(lvWorkshopTargetSel.value,10) } : null,
     };
 
-    const rows = MAIN_HALL_LEVELS.filter(d => d.level > from && d.level <= to);
+    const rows = buildScenarioRows(from, to);
+    const mainHallTotals = rows.reduce((acc, r) => {
+      const lt = levelTotal(r);
+      acc.food += lt.food; acc.oil += lt.oil; acc.steel += lt.steel;
+      acc.minerals += lt.minerals; acc.uranium += lt.uranium;
+      return acc;
+    }, { food:0, oil:0, steel:0, minerals:0, uranium:0 });
 
-    const mainHallOnly = rows.reduce((acc,r)=>{
-      acc.food+=r.mainHall.food;acc.oil+=r.mainHall.oil;acc.steel+=r.mainHall.steel;acc.minerals+=r.mainHall.minerals;acc.uranium+=r.mainHall.uranium;return acc;
-    },{food:0,oil:0,steel:0,minerals:0,uranium:0});
-    const wallTotals = rows.reduce((acc,r)=>{
-      acc.food+=r.wall.food;acc.oil+=r.wall.oil;acc.steel+=r.wall.steel;acc.minerals+=r.wall.minerals;acc.uranium+=r.wall.uranium;return acc;
-    },{food:0,oil:0,steel:0,minerals:0,uranium:0});
-
-    const req=getSecondaryRequirements(from,to);
-    const secondaryTotals={food:0,oil:0,steel:0,minerals:0,uranium:0};
-    const secondaryMemory=[];
-    Object.entries(req).forEach(([key,r])=>{
-      let current=r.from;
-      if(chkRealScenario.checked){
-        const sel=secondaryConfig.querySelector(`[data-secondary-key="${key}"]`);
-        if(sel) current=+sel.value;
-      }
-      const capped=Math.min(current,r.target);
-      const tot=secondarySum(key,capped,r.target);
-      Object.keys(secondaryTotals).forEach(k=>secondaryTotals[k]+=tot[k]);
-      secondaryMemory.push({key,current:capped,target:r.target,totals:tot});
-    });
-
-    const mainHallTotals={
-      food:mainHallOnly.food+wallTotals.food+secondaryTotals.food,
-      oil:mainHallOnly.oil+wallTotals.oil+secondaryTotals.oil,
-      steel:mainHallOnly.steel+wallTotals.steel+secondaryTotals.steel,
-      minerals:mainHallOnly.minerals+wallTotals.minerals+secondaryTotals.minerals,
-      uranium:mainHallOnly.uranium+wallTotals.uranium+secondaryTotals.uranium
-    };
-
-    const breakdown = [
-      {name:t.mainHall,totals:mainHallOnly},
-      {name:t.wall,totals:wallTotals},
-      {name:t.secondary,totals:secondaryTotals}
-    ];
-    const memorySources = [{isMainHall:true,rows:rows,totals:mainHallTotals}];
-
-    secondaryMemory.forEach(s=>{
-      memorySources.push({
-        title:`${T[currentLang].secNames[s.key]||s.key} Lv.${s.current} → Lv.${s.target}`,
-        rows:Object.entries(SECONDARY_DATA[s.key].rows).filter(([lv])=>+lv>s.current&&+lv<=s.target).map(([lv,v])=>({level:+lv,...v})),
-        totals:s.totals
-      });
-    });
+    const breakdown = [ { name:t.mainHallBreakdownName, totals: mainHallTotals } ];
+    const memorySources = [ { isMainHall:true, rows: rows, totals: mainHallTotals } ];
 
     if (lastCalc.factory){
       const { level:fLevel, target:fTarget } = lastCalc.factory;
@@ -1235,18 +1152,10 @@
 
     const notesHost = document.getElementById('levelNotes');
     notesHost.innerHTML = '';
-    rows.forEach(r=>{
-      const row=document.createElement('div');row.className='level-row';
-      let current=r.secondaryFromLv;
-      if(chkRealScenario.checked){
-        const sel=secondaryConfig.querySelector(`[data-secondary-key="${r.secondaryKey}"]`);
-        if(sel) current=+sel.value;
-      }
-      const secName=T[currentLang].secNames[r.secondaryKey]||r.secondaryKey;
-      const sec=current>=r.secondaryToLv
-        ? `${secName} já em Lv.${current} (não precisa subir)`
-        : `${secName} Lv.${current} → Lv.${r.secondaryToLv}`;
-      row.innerHTML=`<div class="lv">Lv.${r.level}</div><div class="req">${T[currentLang].wall} até Lv.${r.wallToLv}, ${sec}</div>`;
+    rows.forEach(r => {
+      const row = document.createElement('div');
+      row.className = 'level-row';
+      row.innerHTML = `<div class="lv">Lv.${r.level}</div><div class="req">${requirementText(r)}</div>`;
       notesHost.appendChild(row);
     });
 
@@ -1292,26 +1201,28 @@
     const rangeText = document.getElementById('resultRange') ? document.getElementById('resultRange').textContent : '—';
     resultTitle.innerHTML = `${t.totalRequiredPrefix}<b id="resultRange">${rangeText}</b>`;
 
-    document.title = currentLang === 'pt' ? 'Requisição de Suprimentos — Main Hall' : 'Supply Requisition — Main Hall';
+    const titles={pt:'Requisição de Recursos — Main Hall',en:'Resource Requisition — Main Hall',ar:'طلب الموارد — Main Hall',ru:'Заявка на ресурсы — Main Hall'}; document.title=titles[currentLang]||titles.en; document.body.dir=currentLang==='ar'?'rtl':'ltr'; if(document.getElementById('scenarioPanel'))syncScenarioUI();
   }
 
   function setLang(lang){
     currentLang = lang;
-    document.getElementById('btnLangPt').classList.toggle('active', lang === 'pt');
-    document.getElementById('btnLangEn').classList.toggle('active', lang === 'en');
-    document.getElementById('btnLangPt').setAttribute('aria-pressed', lang === 'pt');
-    document.getElementById('btnLangEn').setAttribute('aria-pressed', lang === 'en');
+    ['Pt','En','Ar','Ru'].forEach(code=>{
+      const el=document.getElementById('btnLang'+code);
+      if(el){const active=lang===code.toLowerCase();el.classList.toggle('active',active);el.setAttribute('aria-pressed',active);}
+    });
     applyStaticTranslations();
     if (lastCalc && result.classList.contains('show')){
       runCalculation();
     }
   }
 
-  document.getElementById('btnLangPt').addEventListener('click', () => setLang('pt'));
-  document.getElementById('btnLangEn').addEventListener('click', () => setLang('en'));
-
-  applyStaticTranslations();
-  syncScenario();
+  document.getElementById('btnLangPt').addEventListener('click',()=>setLang('pt'));
+  document.getElementById('btnLangEn').addEventListener('click',()=>setLang('en'));
+  document.getElementById('btnLangAr').addEventListener('click',()=>setLang('ar'));
+  document.getElementById('btnLangRu').addEventListener('click',()=>setLang('ru'));
+  document.getElementById('chkRealScenario').addEventListener('change',()=>{syncScenarioUI();if(lastCalc&&result.classList.contains('show'))runCalculation();});
+  lvFromSel.addEventListener('change',syncScenarioUI);lvToSel.addEventListener('change',syncScenarioUI);
+  applyStaticTranslations();syncScenarioUI();
 </script>
 
 </body>
