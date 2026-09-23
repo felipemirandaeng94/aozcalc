@@ -539,7 +539,7 @@
 
     <div class="memory" id="memoryBox">
       <h2 data-i18n="memoryTitle">Memória de cálculo</h2>
-      <p class="sub" data-i18n="memorySub">Cada construção somada separadamente (Main Hall, Muralha e construção secundária), nível a nível, exatamente como entrou na conta.</p>
+      <p class="sub" data-i18n="memorySub">Main Hall, Muralha e construção secundária são detalhados nível a nível. No cenário real, a secundária usa o nível informado pelo jogador.</p>
       <div id="memoryContent"></div>
     </div>
   </section>
@@ -573,13 +573,13 @@
       breakdownTitle:'Divisão por construção', notesTitle:'Construções exigidas, nível a nível (Main Hall)',
       notesSub:'Cada linha soma o Main Hall + a Muralha + a construção secundária daquele nível.',
       finalNote:'<b>Nota:</b> no cenário pessimista, são considerados os níveis mínimos necessários de cada construção secundária. No cenário real, informe o nível atual de cada construção para calcular somente o que ainda falta. Fábrica, Acampamento e Workshop seguem regra própria.',
-      memoryTitle:'Memória de cálculo', memorySub:'Cada construção somada separadamente (Main Hall, Muralha e construção secundária), nível a nível, exatamente como entrou na conta.',
+      memoryTitle:'Memória de cálculo', memorySub:'Main Hall, Muralha e construção secundária são detalhados nível a nível. No cenário real, a secundária usa o nível informado pelo jogador.',
       footerText:'Desenvolvido por <b>Felipe Miranda</b>', wall:'Muralha', mainHall:'Main Hall', secondary:'secundária', grandTotal:'Total geral',
       buildingCol:'Construção', levelCol:'Nível', totalRow:'Total', subtotalRow:'Subtotal', startingFrom:'partindo de', justUnlocked:'recém desbloqueada',
       alreadyAt:'já em', noNeedToUpgrade:'não precisa subir', worstCaseParen:'pior caso',
       secNames:{reconCenter:'Recon Center',garage:'Garagem',depot:'Depósito',embassy:'Embaixada',hospital:'Hospital'},
       mainHallBreakdownName:'Main Hall + Muralha + secundária',
-      mainHallMemoryTitle:(from,to)=>`Main Hall Lv.${from} → Lv.${to} (+ Muralha + secundária)`,
+      mainHallMemoryTitle:(from,to)=>`Main Hall Lv.${from} → Lv.${to} (+ Muralha)`,
       buildingMemoryTitle:(name,from,to)=>`${name} Lv.${from} → Lv.${to}`, buildingBreakdownName:(name,to)=>`${name} (→ Lv.${to})`
     },
     en: {
@@ -607,7 +607,7 @@
       alreadyAt:'already at', noNeedToUpgrade:'no upgrade needed', worstCaseParen:'worst case',
       secNames:{reconCenter:'Recon Center',garage:'Garage',depot:'Depot',embassy:'Embassy',hospital:'Hospital'},
       mainHallBreakdownName:'Main Hall + City Wall + secondary',
-      mainHallMemoryTitle:(from,to)=>`Main Hall Lv.${from} → Lv.${to} (+ City Wall + secondary)`,
+      mainHallMemoryTitle:(from,to)=>`Main Hall Lv.${from} → Lv.${to} (+ City Wall)`,
       buildingMemoryTitle:(name,from,to)=>`${name} Lv.${from} → Lv.${to}`, buildingBreakdownName:(name,to)=>`${name} (→ Lv.${to})`
     },
     ar: {
@@ -657,7 +657,7 @@
       noNeedToUpgrade:'улучшение не требуется', worstCaseParen:'худший случай',
       secNames:{reconCenter:'Разведцентр',garage:'Гараж',depot:'Склад',embassy:'Посольство',hospital:'Госпиталь'},
       mainHallBreakdownName:'Main Hall + городская стена + вторичное',
-      mainHallMemoryTitle:(from,to)=>`Main Hall ур.${from} → ур.${to}`, buildingMemoryTitle:(name,from,to)=>`${name} ур.${from} → ур.${to}`,
+      mainHallMemoryTitle:(from,to)=>`Main Hall ур.${from} → ур.${to} (+ городская стена)`, buildingMemoryTitle:(name,from,to)=>`${name} ур.${from} → ур.${to}`,
       buildingBreakdownName:(name,to)=>`${name} (→ ур.${to})`
     }
   };
@@ -1020,13 +1020,25 @@
       block.appendChild(title);
       block.appendChild(memRow(t.mainHall, r.mainHall));
       block.appendChild(memRow(`${t.wall} Lv.${r.wallToLv}`, r.wall));
+      // A construção secundária aparece sempre dentro da memória do Main Hall.
+      // O cenário pessimista usa o intervalo obrigatório padrão; o cenário real
+      // usa exatamente o nível informado pelo jogador.
+      const realScenario = document.getElementById('chkRealScenario')?.checked;
       let secLabel;
-      if(document.getElementById('chkRealScenario')?.checked && r.scenarioActual!=null){
-        secLabel=r.scenarioStart>=r.secondaryToLv ? `${t.secNames[r.secondaryKey]} Lv.${r.scenarioActual} (${t.noNeedToUpgrade})` : `${t.secNames[r.secondaryKey]} Lv.${r.scenarioStart} → Lv.${r.secondaryToLv}`;
-      }else{
-        secLabel=`${t.secNames[r.secondaryKey]} ${r.secondaryFromLv===r.secondaryToLv?('Lv.'+r.secondaryToLv):('Lv.'+(r.secondaryFromLv+1)+'-'+r.secondaryToLv)}`;
+
+      if (realScenario && r.scenarioActual != null) {
+        if (r.scenarioStart >= r.secondaryToLv) {
+          secLabel = `${t.secNames[r.secondaryKey]} Lv.${r.scenarioActual} (${t.noNeedToUpgrade})`;
+        } else {
+          secLabel = `${t.secNames[r.secondaryKey]} Lv.${r.scenarioStart} → Lv.${r.secondaryToLv}`;
+        }
+      } else if (r.secondaryFromLv === r.secondaryToLv) {
+        secLabel = `${t.secNames[r.secondaryKey]} Lv.${r.secondaryToLv}`;
+      } else {
+        secLabel = `${t.secNames[r.secondaryKey]} Lv.${r.secondaryFromLv} → Lv.${r.secondaryToLv}`;
       }
-      block.appendChild(memRow(secLabel,r.secondary));
+
+      block.appendChild(memRow(secLabel, r.secondary));
       block.appendChild(memRow(t.subtotalRow, levelTotal(r), 'subtotal'));
       wrap.appendChild(block);
     });
