@@ -381,7 +381,11 @@
     <svg class="lang-flag" viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#006c35"/><text x="10" y="8.7" text-anchor="middle" font-size="3.4" fill="#fff">شهادة</text><path d="M5 10.5h10" stroke="#fff" stroke-width=".45"/></svg>
     العربية</button><button class="lang-btn" id="btnLangRu" type="button" aria-pressed="false" title="Русский (Россия)">
     <svg class="lang-flag" viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="4.67" fill="#fff"/><rect y="4.67" width="20" height="4.67" fill="#0039a6"/><rect y="9.34" width="20" height="4.66" fill="#d52b1e"/></svg>
-    Русский</button>
+    Русский</button><button class="lang-btn" id="btnLangEs" type="button" aria-pressed="false" title="Español (España)">
+    <svg class="lang-flag" viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" fill="#c60b1e"/><rect y="3.5" width="20" height="7" fill="#ffc400"/></svg>
+    Español</button><button class="lang-btn" id="btnLangFr" type="button" aria-pressed="false" title="Français (France)">
+    <svg class="lang-flag" viewBox="0 0 20 14" aria-hidden="true"><rect width="6.67" height="14" fill="#0055a4"/><rect x="6.67" width="6.66" height="14" fill="#fff"/><rect x="13.33" width="6.67" height="14" fill="#ef4135"/></svg>
+    Français</button>
 </div>
 
 <header>
@@ -609,6 +613,62 @@
       mainHallBreakdownName:'Main Hall + City Wall + secondary',
       mainHallMemoryTitle:(from,to)=>`Main Hall Lv.${from} → Lv.${to} (+ City Wall)`,
       buildingMemoryTitle:(name,from,to)=>`${name} Lv.${from} → Lv.${to}`, buildingBreakdownName:(name,to)=>`${name} (→ Lv.${to})`
+    },
+    es: {
+      eyebrow:'Age of Origins — Centro de Construcción', titlePrefix:'Solicitud de', titleWord:'Recursos',
+      docForm:'FORMULARIO', docTarget:'OBJETIVO: Main Hall Nv.30 – 41', docScenario:'ESCENARIO:', worstCaseLabel:'peor caso',
+      currentMHLevel:'Nivel actual del Main Hall', desiredLevel:'Nivel deseado', calcButton:'Calcular solicitud',
+      formError:'El nivel deseado debe ser superior al nivel actual.', extraSection:'Construcciones adicionales (opcional)',
+      factory:'Fábrica', camp:'Campamento', workshop:'Taller', currentFactoryLevel:'Nivel actual de la Fábrica', desiredFactoryLevel:'Nivel deseado de la Fábrica',
+      factoryHint:'La Fábrica solo sube hasta el mismo nivel que el Main Hall, pero puedes elegir hasta dónde llevarla independientemente del objetivo del Main Hall.',
+      currentCampLevel:'Nivel actual del Campamento', desiredCampLevel:'Nivel deseado del Campamento',
+      campHint:'El Campamento está limitado por el nivel del Main Hall, pero puede tener su propio objetivo.',
+      currentWorkshopLevel:'Nivel actual del Taller', desiredWorkshopLevel:'Nivel deseado del Taller',
+      workshopHint:'La wiki solo documenta el Taller hasta el nivel 38 — el selector no supera ese nivel.',
+      scenarioTitle:'Escenario real de las construcciones requeridas', scenarioSub:'Por defecto, el simulador usa el peor caso. Activa esta opción para indicar el nivel real de cada construcción secundaria requerida.',
+      useRealScenario:'Usar mi escenario real', scenarioWorst:'Escenario de peor caso activo — se utilizarán los niveles mínimos requeridos.',
+      scenarioReal:'Escenario real activo — se utilizarán los niveles actuales indicados.', currentSecondary:'Nivel actual', minimumRequired:'Mínimo requerido',
+      totalRequiredPrefix:'Total de recursos requeridos', stampCalculated:'Solicitud calculada',
+      food:'Comida', oil:'Petróleo', steel:'Acero', rareEarth:'Tierra Rara', uranium:'Uranio',
+      breakdownTitle:'Desglose por construcción', notesTitle:'Construcciones requeridas, nivel por nivel (Main Hall)',
+      notesSub:'Cada línea suma el Main Hall + la Muralla + la construcción secundaria requerida para ese nivel.',
+      finalNote:'<b>Nota:</b> en el peor caso se considera el nivel mínimo requerido de cada construcción secundaria. En el escenario real, indica el nivel actual para calcular solo lo que falta. Fábrica, Campamento y Taller siguen su propia regla.',
+      memoryTitle:'Memoria de cálculo', memorySub:'Main Hall, Muralla y construcción secundaria se detallan nivel por nivel. En el escenario real, la secundaria utiliza el nivel indicado por el jugador.',
+      footerText:'Desarrollado por <b>Felipe Miranda</b>', wall:'Muralla', mainHall:'Main Hall', secondary:'secundaria', grandTotal:'Total general',
+      buildingCol:'Construcción', levelCol:'Nivel', totalRow:'Total', subtotalRow:'Subtotal', startingFrom:'partiendo de', justUnlocked:'recién desbloqueada',
+      alreadyAt:'ya en', noNeedToUpgrade:'no necesita subir', worstCaseParen:'peor caso',
+      secNames:{reconCenter:'Centro de Reconocimiento',garage:'Garaje',depot:'Depósito',embassy:'Embajada',hospital:'Hospital'},
+      mainHallBreakdownName:'Main Hall + Muralla + secundaria',
+      mainHallMemoryTitle:(from,to)=>`Main Hall Nv.${from} → Nv.${to} (+ Muralla)`,
+      buildingMemoryTitle:(name,from,to)=>`${name} Nv.${from} → Nv.${to}`, buildingBreakdownName:(name,to)=>`${name} (→ Nv.${to})`
+    },
+    fr: {
+      eyebrow:'Age of Origins — Centre de Construction', titlePrefix:'Demande de', titleWord:'Ressources',
+      docForm:'FORMULAIRE', docTarget:'OBJECTIF : Main Hall Niv.30 – 41', docScenario:'SCÉNARIO :', worstCaseLabel:'pire cas',
+      currentMHLevel:'Niveau actuel du Main Hall', desiredLevel:'Niveau souhaité', calcButton:'Calculer la demande',
+      formError:'Le niveau souhaité doit être supérieur au niveau actuel.', extraSection:'Constructions supplémentaires (optionnel)',
+      factory:'Usine', camp:'Camp', workshop:'Atelier', currentFactoryLevel:'Niveau actuel de l’Usine', desiredFactoryLevel:'Niveau souhaité de l’Usine',
+      factoryHint:'L’Usine ne peut monter qu’au même niveau que le Main Hall, mais vous choisissez jusqu’où la monter indépendamment de la cible du Main Hall.',
+      currentCampLevel:'Niveau actuel du Camp', desiredCampLevel:'Niveau souhaité du Camp',
+      campHint:'Le Camp est limité par le niveau du Main Hall, mais peut avoir sa propre cible.',
+      currentWorkshopLevel:'Niveau actuel de l’Atelier', desiredWorkshopLevel:'Niveau souhaité de l’Atelier',
+      workshopHint:'La wiki ne documente l’Atelier que jusqu’au niveau 38 — le sélecteur ne va pas au-delà.',
+      scenarioTitle:'Scénario réel des constructions requises', scenarioSub:'Par défaut, le simulateur utilise le pire cas. Activez cette option pour indiquer le niveau réel de chaque construction secondaire requise.',
+      useRealScenario:'Utiliser mon scénario réel', scenarioWorst:'Scénario pessimiste actif — les niveaux minimaux requis seront utilisés.',
+      scenarioReal:'Scénario réel actif — les niveaux actuels indiqués seront utilisés.', currentSecondary:'Niveau actuel', minimumRequired:'Minimum requis',
+      totalRequiredPrefix:'Total des ressources requises', stampCalculated:'Demande calculée',
+      food:'Nourriture', oil:'Pétrole', steel:'Acier', rareEarth:'Terres rares', uranium:'Uranium',
+      breakdownTitle:'Répartition par construction', notesTitle:'Constructions requises, niveau par niveau (Main Hall)',
+      notesSub:'Chaque ligne additionne le Main Hall + le Mur + la construction secondaire requise pour ce niveau.',
+      finalNote:'<b>Remarque :</b> dans le pire cas, le niveau minimal requis de chaque construction secondaire est pris en compte. Dans le scénario réel, indiquez le niveau actuel pour calculer uniquement ce qui manque. L’Usine, le Camp et l’Atelier suivent leur propre règle.',
+      memoryTitle:'Mémoire de calcul', memorySub:'Main Hall, Mur et construction secondaire sont détaillés niveau par niveau. Dans le scénario réel, le niveau indiqué est utilisé pour la construction secondaire.',
+      footerText:'Développé par <b>Felipe Miranda</b>', wall:'Mur', mainHall:'Main Hall', secondary:'secondaire', grandTotal:'Total général',
+      buildingCol:'Construction', levelCol:'Niveau', totalRow:'Total', subtotalRow:'Sous-total', startingFrom:'à partir de', justUnlocked:'vient d’être débloquée',
+      alreadyAt:'déjà au', noNeedToUpgrade:'aucune amélioration nécessaire', worstCaseParen:'pire cas',
+      secNames:{reconCenter:'Centre de reconnaissance',garage:'Garage',depot:'Dépôt',embassy:'Ambassade',hospital:'Hôpital'},
+      mainHallBreakdownName:'Main Hall + Mur + secondaire',
+      mainHallMemoryTitle:(from,to)=>`Main Hall Niv.${from} → Niv.${to} (+ Mur)`,
+      buildingMemoryTitle:(name,from,to)=>`${name} Niv.${from} → Niv.${to}`, buildingBreakdownName:(name,to)=>`${name} (→ Niv.${to})`
     },
     ar: {
       eyebrow:'Age of Origins — قيادة البناء', titlePrefix:'طلب', titleWord:'الموارد',
@@ -961,7 +1021,7 @@
     return s;
   }
   function exact(n){
-    const locales={pt:'pt-BR',en:'en-US',ar:'ar-EG',ru:'ru-RU'}; return Math.round(n).toLocaleString(locales[currentLang]||'en-US');
+    const locales={pt:'pt-BR',en:'en-US',ar:'ar-EG',ru:'ru-RU',es:'es-ES',fr:'fr-FR'}; return Math.round(n).toLocaleString(locales[currentLang]||'en-US');
   }
 
   function sumExtraBuilding(dataTable, fromLevel, toLevel, hardCap){
@@ -1194,7 +1254,7 @@
      ========================================================= */
   function applyStaticTranslations(){
     const t = T[currentLang];
-    document.documentElement.lang = currentLang === 'pt' ? 'pt-BR' : 'en';
+    document.documentElement.lang = ({pt:'pt-BR',en:'en-US',ar:'ar',ru:'ru-RU',es:'es-ES',fr:'fr-FR'})[currentLang] || 'en-US';
 
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
@@ -1218,7 +1278,7 @@
 
   function setLang(lang){
     currentLang = lang;
-    ['Pt','En','Ar','Ru'].forEach(code=>{
+    ['Pt','En','Ar','Ru','Es','Fr'].forEach(code=>{
       const el=document.getElementById('btnLang'+code);
       if(el){const active=lang===code.toLowerCase();el.classList.toggle('active',active);el.setAttribute('aria-pressed',active);}
     });
@@ -1232,6 +1292,8 @@
   document.getElementById('btnLangEn').addEventListener('click',()=>setLang('en'));
   document.getElementById('btnLangAr').addEventListener('click',()=>setLang('ar'));
   document.getElementById('btnLangRu').addEventListener('click',()=>setLang('ru'));
+  document.getElementById('btnLangEs').addEventListener('click',()=>setLang('es'));
+  document.getElementById('btnLangFr').addEventListener('click',()=>setLang('fr'));
   document.getElementById('chkRealScenario').addEventListener('change',()=>{syncScenarioUI();if(lastCalc&&result.classList.contains('show'))runCalculation();});
   lvFromSel.addEventListener('change',syncScenarioUI);lvToSel.addEventListener('change',syncScenarioUI);
   applyStaticTranslations();syncScenarioUI();
